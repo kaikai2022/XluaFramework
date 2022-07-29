@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "lpvm.h": "c",
+        "cmath": "cpp",
+        "limits": "cpp",
+        "vector": "cpp",
+        "__config": "cpp",
+        "__debug": "cpp",
+        "__bit_reference": "cpp",
+        "algorithm": "cpp",
+        "memory": "cpp",
+        "iterator": "cpp"
+    }
+}
