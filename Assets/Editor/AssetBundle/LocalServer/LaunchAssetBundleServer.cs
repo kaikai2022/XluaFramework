@@ -89,7 +89,13 @@ namespace AssetBundles
                 instance.mServerPID = launchProcess.Id;
                 UnityEngine.Debug.Log("Local assetbundle server run!");
             }
-            
+
+            var launchProcessThread = new Thread(() =>
+            {
+                UnityEngine.Debug.Log(launchProcess.StandardOutput.ReadToEnd());
+            });
+            launchProcessThread.Start();
+
             // var thread = new Thread(() =>
             // {
             //     AssetBundleServer.MainClass.Run(new[]
@@ -124,6 +130,7 @@ namespace AssetBundles
             }
 
             return profileVersion;
+            // return "4.5";
         }
 
         public static string GetStreamingAssetBundleServerUrl()

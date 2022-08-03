@@ -14,7 +14,10 @@ namespace AssetBundles
 {
     public class AssetBundleConfig
     {
-        public const string localSvrAppPath = "Editor/AssetBundle/LocalServer/AssetBundleServer.exe";
+        // public const string localSvrAppPath = "Editor/AssetBundle/LocalServer/AssetBundleServer.dll";
+        // public const string localSvrAppPath = "Editor/AssetBundle/LocalServer/XluaAssetBundleServer.exe";
+        public const string localSvrAppPath = "../AssetBundleServer/XluaAssetBundleServer.exe";
+
         public const string AssetBundlesFolderName = "AssetBundles";
         public const string TempFolderName = "Temp";
         public const string AssetBundleSuffix = ".assetbundle";
