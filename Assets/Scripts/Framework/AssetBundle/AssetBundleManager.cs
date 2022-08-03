@@ -108,12 +108,8 @@ namespace AssetBundles
             var pathMapRequest = RequestAssetBundleAsync(assetsPathMapping.AssetbundleName);
 
             yield return manifestRequest;
-            Logger.Log(manifestRequest.isDone.ToString(), "hahahhahaahhahaha");
             var assetbundle = manifestRequest.assetbundle;
-            Logger.Log(assetbundle.name, "hahahhahaahhahaha");
-
             manifest.LoadFromAssetbundle(assetbundle);
-            Logger.Log(manifest.AssetbundleName, "hahahhahaahhahaha");
 
             assetbundle.Unload(false);
             manifestRequest.Dispose();
@@ -245,33 +241,42 @@ namespace AssetBundles
                 }
                 else
                 {
-                    var assetPath = AssetBundleUtility.PackagePathToAssetsPath(assetName);
-                    var asset = curAssetbundle == null ? null : curAssetbundle.LoadAsset(assetPath, assetType);
-                    AddAssetCache(assetName, asset);
+                    if (!curAssetbundle.isStreamedSceneAssetBundle)
+                    {
+                        var assetPath = AssetBundleUtility.PackagePathToAssetsPath(assetName);
+                        var asset = curAssetbundle == null ? null : curAssetbundle.LoadAsset(assetPath, assetType);
+                        AddAssetCache(assetName, asset);
 
 #if UNITY_EDITOR
-                    // 说明：在Editor模拟时，Shader要重新指定
-                    var go = asset as GameObject;
-                    if (go != null)
-                    {
-                        var renderers = go.GetComponentsInChildren<Renderer>();
-                        for (int j = 0; j < renderers.Length; j++)
+                        // 说明：在Editor模拟时，Shader要重新指定
+                        var go = asset as GameObject;
+                        if (go != null)
                         {
-                            var mat = renderers[j].sharedMaterial;
-                            if (mat == null)
+                            var renderers = go.GetComponentsInChildren<Renderer>();
+                            for (int j = 0; j < renderers.Length; j++)
                             {
-                                continue;
-                            }
+                                var mat = renderers[j].sharedMaterial;
+                                if (mat == null)
+                                {
+                                    continue;
+                                }
 
-                            var shader = mat.shader;
-                            if (shader != null)
-                            {
-                                var shaderName = shader.name;
-                                mat.shader = Shader.Find(shaderName);
+                                var shader = mat.shader;
+                                if (shader != null)
+                                {
+                                    var shaderName = shader.name;
+                                    mat.shader = Shader.Find(shaderName);
+                                }
                             }
                         }
-                    }
 #endif
+                    }
+                    else
+                    {
+                        var assetPath = AssetBundleUtility.PackagePathToAssetsPath(assetName);
+                        // var asset = curAssetbundle == null ? null : curAssetbundle.LoadAsset(assetPath, assetType);
+                        AddAssetCache(assetName, null);
+                    }
                 }
             }
         }

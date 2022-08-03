@@ -26,6 +26,8 @@ namespace AssetBundles
         public const string VariantMapParttren = "Variant";
         public const string CommonMapPattren = ",";
 
+        public const string key = "ausdyqwb123128796";
+
 #if UNITY_EDITOR
         public static string AssetBundlesBuildOutputPath
         {
@@ -39,18 +41,12 @@ namespace AssetBundles
 
         public static string LocalSvrAppPath
         {
-            get
-            {
-                return Path.Combine(Application.dataPath, localSvrAppPath);
-            }
+            get { return Path.Combine(Application.dataPath, localSvrAppPath); }
         }
 
         public static string LocalSvrAppWorkPath
         {
-            get
-            {
-                return AssetBundlesBuildOutputPath;
-            }
+            get { return AssetBundlesBuildOutputPath; }
         }
 
         private static int mIsEditorMode = -1;
@@ -68,6 +64,7 @@ namespace AssetBundles
                     {
                         EditorPrefs.SetBool(kIsEditorMode, false);
                     }
+
                     mIsEditorMode = EditorPrefs.GetBool(kIsEditorMode, true) ? 1 : 0;
                 }
 
@@ -98,6 +95,7 @@ namespace AssetBundles
                     {
                         EditorPrefs.SetBool(kIsSimulateMode, true);
                     }
+
                     mIsSimulateMode = EditorPrefs.GetBool(kIsSimulateMode, true) ? 1 : 0;
                 }
 

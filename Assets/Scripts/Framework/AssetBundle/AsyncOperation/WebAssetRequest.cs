@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AESEncrypt;
 using UnityEngine;
 using XLua;
 
@@ -58,34 +59,31 @@ namespace AssetBundles
             isOver = false;
         }
 
-        public string url
-        {
-            get;
-            protected set;
-        }
+        public string url { get; protected set; }
 
         public override AssetBundle assetbundle
         {
             get
             {
-                return www.assetBundle;
+                // if (PackageUti.)
+                // return www.assetBundle;
+
+                // AssetBundle.LoadFromMemoryAsync();
+
+                var assetBundle =
+                    AssetBundle.LoadFromMemoryAsync(AES.AESFileByteDecrypt(www.bytes, AssetBundleConfig.key));
+                return assetBundle.assetBundle;
             }
         }
 
         public byte[] bytes
         {
-            get
-            {
-                return www.bytes;
-            }
+            get { return www.bytes; }
         }
 
         public string text
         {
-            get
-            {
-                return www.text;
-            }
+            get { return www.text; }
         }
 
         public string error
@@ -105,7 +103,6 @@ namespace AssetBundles
 
         public override void Start()
         {
-            
             www = new WWW(url);
             if (www == null)
             {
@@ -117,7 +114,7 @@ namespace AssetBundles
                 Logger.Log("Downloading : " + url);
             }
         }
-        
+
         public override float Progress()
         {
             if (isDone)
@@ -134,7 +131,7 @@ namespace AssetBundles
             {
                 return;
             }
-            
+
             isOver = www != null && (www.isDone || !string.IsNullOrEmpty(www.error));
             if (!isOver)
             {
@@ -154,6 +151,7 @@ namespace AssetBundles
                 www.Dispose();
                 www = null;
             }
+
             Recycle(this);
         }
     }
