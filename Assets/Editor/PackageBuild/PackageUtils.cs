@@ -24,6 +24,7 @@ public class PackageUtils
     public const string LocalServerIPPrefsKey = "AssetBundlesLocalServerIP";
     public const string AndroidBuildABForPerChannelPrefsKey = "AndroidBuildABForPerChannelPrefsKey";
     public const string IOSBuildABForPerChannelPrefsKey = "IOSBuildABForPerChannelPrefsKey";
+    public const string AssetbundleIsEncrptyKey = "AssetbundleIsEncrptyKey";
 
     public static bool GetAndroidBuildABForPerChannelSetting()
     {
@@ -40,6 +41,23 @@ public class PackageUtils
     public static void SaveAndroidBuildABForPerChannelSetting(bool enable)
     {
         EditorPrefs.SetBool(AndroidBuildABForPerChannelPrefsKey, enable);
+    }
+
+    public static bool GetAssetbundleIsEncrptySetting()
+    {
+        if (!EditorPrefs.HasKey(AssetbundleIsEncrptyKey))
+        {
+            SaveIOSBuildABForPerChannelSetting(false);
+            return false;
+        }
+
+        bool enable = EditorPrefs.GetBool(AssetbundleIsEncrptyKey, false);
+        return enable;
+    }
+
+    public static void SaveAssetbundleIsEncrptySetting(bool enable)
+    {
+        EditorPrefs.SetBool(AssetbundleIsEncrptyKey, enable);
     }
 
     public static bool GetIOSBuildABForPerChannelSetting()

@@ -6,15 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace AssetBundles
 {
-	internal class LaunchAssetBundleServer : ScriptableSingleton<LaunchAssetBundleServer>
-	{
+    internal class LaunchAssetBundleServer : ScriptableSingleton<LaunchAssetBundleServer>
+    {
+        [SerializeField] int mServerPID = 0;
 
-		[SerializeField]
-		int mServerPID = 0;
-        
         public static void CheckAndDoRunning()
         {
             WriteAssetBundleServerURL();
@@ -30,9 +29,9 @@ namespace AssetBundles
                 }
             }
         }
-        
-		static bool IsRunning ()
-		{
+
+        static bool IsRunning()
+        {
             if (instance.mServerPID == 0)
             {
                 return false;
@@ -52,46 +51,62 @@ namespace AssetBundles
             {
                 return false;
             }
-		}
-        
-		static void KillRunningAssetBundleServer ()
-		{
-			try
-			{
-				if (instance.mServerPID == 0)
-					return;
+        }
 
-				var lastProcess = Process.GetProcessById (instance.mServerPID);
-				lastProcess.Kill();
-				instance.mServerPID = 0;
+        static void KillRunningAssetBundleServer()
+        {
+            try
+            {
+                if (instance.mServerPID == 0)
+                    return;
+
+                var lastProcess = Process.GetProcessById(instance.mServerPID);
+                lastProcess.Kill();
+                instance.mServerPID = 0;
                 UnityEngine.Debug.Log("Local assetbundle server stop!");
             }
-			catch
-			{
-			}
-		}
+            catch
+            {
+            }
+        }
 
-		static void Run ()
-		{
-			string args = string.Format("\"{0}\" {1}", AssetBundleConfig.LocalSvrAppWorkPath, Process.GetCurrentProcess().Id);
-            ProcessStartInfo startInfo = ExecuteInternalMono.GetProfileStartInfoForMono(MonoInstallationFinder.GetMonoInstallation("MonoBleedingEdge"), GetMonoProfileVersion(), AssetBundleConfig.LocalSvrAppPath, args, true);
+        static void Run()
+        {
+            string args = string.Format("\"{0}\" {1}", AssetBundleConfig.LocalSvrAppWorkPath,
+                Process.GetCurrentProcess().Id);
+            ProcessStartInfo startInfo = ExecuteInternalMono.GetProfileStartInfoForMono(
+                MonoInstallationFinder.GetMonoInstallation("MonoBleedingEdge"), GetMonoProfileVersion(),
+                AssetBundleConfig.LocalSvrAppPath, args, true);
             startInfo.WorkingDirectory = AssetBundleConfig.LocalSvrAppWorkPath;
-			startInfo.UseShellExecute = false;
-			Process launchProcess = Process.Start(startInfo);
-			if (launchProcess == null || launchProcess.HasExited == true || launchProcess.Id == 0)
-			{
-                UnityEngine.Debug.LogError ("Unable Start AssetBundleServer process!");
-			}
-			else
-			{
-				instance.mServerPID = launchProcess.Id;
+            startInfo.UseShellExecute = false;
+            Process launchProcess = Process.Start(startInfo);
+            if (launchProcess == null || launchProcess.HasExited == true || launchProcess.Id == 0)
+            {
+                UnityEngine.Debug.LogError("Unable Start AssetBundleServer process!");
+            }
+            else
+            {
+                instance.mServerPID = launchProcess.Id;
                 UnityEngine.Debug.Log("Local assetbundle server run!");
             }
+            
+            // var thread = new Thread(() =>
+            // {
+            //     AssetBundleServer.MainClass.Run(new[]
+            //     {
+            //         AssetBundleConfig.LocalSvrAppWorkPath,
+            //         // Process.GetCurrentProcess().Id.ToString()
+            //     });
+            // });
+            // // instance.mServerPID = thread.GetHashCode();
+            // thread.Start();
         }
 
         static string GetMonoProfileVersion()
         {
-            string path = Path.Combine(Path.Combine(MonoInstallationFinder.GetMonoInstallation("MonoBleedingEdge"), "lib"), "mono");
+            string path =
+                Path.Combine(Path.Combine(MonoInstallationFinder.GetMonoInstallation("MonoBleedingEdge"), "lib"),
+                    "mono");
 
             string[] folders = Directory.GetDirectories(path);
             string[] foldersWithApi = folders.Where(f => f.Contains("-api")).ToArray();
@@ -101,7 +116,7 @@ namespace AssetBundles
             {
                 foldersWithApi[i] = foldersWithApi[i].Split(Path.DirectorySeparatorChar).Last();
                 foldersWithApi[i] = foldersWithApi[i].Split('-').First();
-                
+
                 if (string.Compare(foldersWithApi[i], profileVersion) > 0)
                 {
                     profileVersion = foldersWithApi[i];
@@ -113,7 +128,8 @@ namespace AssetBundles
 
         public static string GetStreamingAssetBundleServerUrl()
         {
-            string assetBundleServerUrl = Path.Combine(Application.streamingAssetsPath, AssetBundleConfig.AssetBundlesFolderName);
+            string assetBundleServerUrl =
+                Path.Combine(Application.streamingAssetsPath, AssetBundleConfig.AssetBundlesFolderName);
             assetBundleServerUrl = Path.Combine(assetBundleServerUrl, AssetBundleConfig.AssetBundleServerUrlFileName);
             return assetBundleServerUrl;
         }
