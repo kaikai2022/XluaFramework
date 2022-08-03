@@ -43,7 +43,6 @@ ExportedObj/
 sysinfo.txt
 
 # Builds
-*.apk
 *.unitypackage
 
 # Crashlytics generated file
@@ -75,3 +74,5 @@ Assets/StreamingAssets/AssetBundles/
 Assets/StreamingAssets/AssetBundles.meta
 .idea/
 **/.DS_Store
+/Build/
+/WebGL/
