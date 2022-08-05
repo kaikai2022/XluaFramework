@@ -96,6 +96,17 @@ namespace AESEncrypt
             }
         }
 
+        public static bool BytesIsEncrypt(byte[] data)
+        {
+            if (data == null || data.Length < AES_HEAD.Length)
+            {
+                return false;
+            }
+
+            string headTag = Encoding.UTF8.GetString(data, 0, AES_HEAD.Length);
+            return headTag.Equals(AES_HEAD);
+        }
+
         public static byte[] AESFileByteDecrypt(byte[] data, string EncrptyKey)
         {
             if (data == null || data.Length < AES_HEAD.Length)
@@ -107,7 +118,7 @@ namespace AESEncrypt
             try
             {
                 string headTag = Encoding.UTF8.GetString(data, 0, AES_HEAD.Length);
-                if (headTag == AES_HEAD)
+                if (headTag.Equals(AES_HEAD))
                 {
                     byte[] buffer = new byte[data.Length - headTag.Length];
                     for (int index = 0; index < buffer.Length; index++)

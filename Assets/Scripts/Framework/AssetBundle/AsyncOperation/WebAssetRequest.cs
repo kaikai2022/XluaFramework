@@ -65,14 +65,16 @@ namespace AssetBundles
         {
             get
             {
-                // if (PackageUti.)
-                // return www.assetBundle;
-
-                // AssetBundle.LoadFromMemoryAsync();
-
-                var assetBundle =
-                    AssetBundle.LoadFromMemoryAsync(AES.AESFileByteDecrypt(www.bytes, AssetBundleConfig.key));
-                return assetBundle.assetBundle;
+                if (AES.BytesIsEncrypt(bytes))
+                {
+                    var assetBundle =
+                        AssetBundle.LoadFromMemoryAsync(AES.AESFileByteDecrypt(bytes, AssetBundleConfig.key));
+                    return assetBundle.assetBundle;
+                }
+                else
+                {
+                    return www.assetBundle;
+                }
             }
         }
 
