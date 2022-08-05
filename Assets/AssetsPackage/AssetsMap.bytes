@@ -1,3 +1,4 @@
+assetsmap_bytes.assetbundle,AssetsMap.bytes
 effect/common.assetbundle,Effect/Common/Materials/models_fx_R.mat
 effect/common.assetbundle,Effect/Common/Materials/models_fx_RGB.mat
 effect/common.assetbundle,Effect/Common/Texture/Matcap_Encode2.png
@@ -182,6 +183,8 @@ lua.assetbundle,Lua/XLua/HotfixMain.lua.bytes
 lua.assetbundle,Lua/XLua/Perf/memory.lua.bytes
 lua.assetbundle,Lua/XLua/Perf/profiler.lua.bytes
 lua.assetbundle,Lua/XLua/Tdr/tdr.lua.bytes
+minnigames/guesstheidiom/bg_png.assetbundle,MinniGames/GuessTheIdiom/bg.png
+minnigames/guesstheidiom/guesstheidiomimages_spriteatlas.assetbundle,MinniGames/GuessTheIdiom/GuessTheIdiomImages.spriteatlas
 models/1001.assetbundle,Models/1001/Character.prefab
 shaders.assetbundle,Shaders/Model/Particles-Add-R.shader
 shaders.assetbundle,Shaders/Model/Particles-Add-RGBA.shader
@@ -375,3 +378,4 @@ ui/prefabs/uiloading.assetbundle,UI/Prefabs/UILoading/UILoading.prefab
 ui/prefabs/uilogin.assetbundle,UI/Prefabs/UILogin/UILogin.prefab
 ui/prefabs/uilogin.assetbundle,UI/Prefabs/UILogin/UILoginServer.prefab
 ui/prefabs/uimain.assetbundle,UI/Prefabs/UIMain/UITestMain.prefab
+variantsmap_bytes.assetbundle,VariantsMap.bytes

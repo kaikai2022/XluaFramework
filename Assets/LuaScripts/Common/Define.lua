@@ -5,6 +5,6 @@
 --]]
 
 
-GameObject=CS.UnityEngine.GameObject
-Transform=CS.UnityEngine.Transform
-Camera=CS.UnityEngine.Camera
+GameObject = CS.UnityEngine.GameObject
+Transform = CS.UnityEngine.Transform
+Camera = CS.UnityEngine.Camera

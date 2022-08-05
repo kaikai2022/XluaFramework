@@ -3,6 +3,7 @@ using System.Collections;
 using AssetBundles;
 using GameChannel;
 using System;
+using UnityEngine.Android;
 using XLua;
 
 [Hotfix]
@@ -39,38 +40,44 @@ public class GameLaunch : MonoBehaviour
 
         yield return null;
 
-        // 初始化UI界面
-        start = DateTime.Now;
-        yield return InitLaunchPrefab();
-        Logger.Log(string.Format("Load launchPrefab use {0}ms", (DateTime.Now - start).Milliseconds));
-
-        // 初始化App版本
-        start = DateTime.Now;
-        yield return InitAppVersion();
-        Logger.Log(string.Format("Init AppVersion use {0}ms", (DateTime.Now - start).Milliseconds));
-
-        // 初始化渠道
-        start = DateTime.Now;
-        yield return InitChannel();
-        Logger.Log(string.Format("Init Channel use {0}ms", (DateTime.Now - start).Milliseconds));
-
-        // 初始化SDK
-        start = DateTime.Now;
-        yield return InitSDK();
-        Logger.Log(string.Format("Init SDK use {0}ms", (DateTime.Now - start).Milliseconds));
-
-        yield return null;
-
-        start = DateTime.Now;
-        yield return InitNoticeTipPrefab();
-        Logger.Log(string.Format("Load noticeTipPrefab use {0}ms", (DateTime.Now - start).Milliseconds));
-
-        // 开始更新
-        start = DateTime.Now;
-        yield return updater.StartCheckUpdate();
-        Logger.Log(string.Format("CheckUpdate use {0}ms", (DateTime.Now - start).Milliseconds));
-        Destroy(updater);
-        yield return null;
+//         // 初始化UI界面
+//         start = DateTime.Now;
+//         yield return InitLaunchPrefab();
+//         Logger.Log(string.Format("Load launchPrefab use {0}ms", (DateTime.Now - start).Milliseconds));
+//
+//         // 初始化App版本
+//         start = DateTime.Now;
+//         yield return InitAppVersion();
+//         Logger.Log(string.Format("Init AppVersion use {0}ms", (DateTime.Now - start).Milliseconds));
+//
+//         // 初始化渠道
+//         start = DateTime.Now;
+//         yield return InitChannel();
+//         Logger.Log(string.Format("Init Channel use {0}ms", (DateTime.Now - start).Milliseconds));
+//
+//         // 初始化SDK
+//         start = DateTime.Now;
+//         yield return InitSDK();
+//         Logger.Log(string.Format("Init SDK use {0}ms", (DateTime.Now - start).Milliseconds));
+//
+//         yield return null;
+//
+//         start = DateTime.Now;
+//         yield return InitNoticeTipPrefab();
+//         Logger.Log(string.Format("Load noticeTipPrefab use {0}ms", (DateTime.Now - start).Milliseconds));
+//             
+// #if PLATFORM_ANDROID
+//         if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+//         {
+//             Permission.RequestUserPermission(Permission.Microphone);
+//         }
+// #endif
+//         // 开始更新
+//         start = DateTime.Now;
+//         yield return updater.StartCheckUpdate();
+//         Logger.Log(string.Format("CheckUpdate use {0}ms", (DateTime.Now - start).Milliseconds));
+//         Destroy(updater);
+//         yield return null;
 
         // 启动xlua框架
         start = DateTime.Now;
@@ -221,28 +228,6 @@ public class GameLaunch : MonoBehaviour
 
     IEnumerator StartGame()
     {
-        // 加载SceneAB包
-        // string sceneAssetbundleName =
-        //     AssetBundleUtility.AssetBundlePathToAssetBundleName(
-        //         AssetBundleUtility.PackagePathToAssetsPath("Scenes/LoadingScene.unity"));
-        // AssetBundleManager.Instance.SetAssetBundleResident(sceneAssetbundleName, true);
-        // var sceneAbloader = AssetBundleManager.Instance.LoadAssetBundleAsync(sceneAssetbundleName);
-        // yield return sceneAbloader;
-        // if (sceneAbloader.assetbundle.isStreamedSceneAssetBundle)
-        // {
-        //     Logger.Log(sceneAbloader.assetbundle.GetAllScenePaths());
-        // }
-        //
-        // sceneAbloader.Dispose();
-        //
-        // sceneAssetbundleName =
-        //     AssetBundleUtility.AssetBundlePathToAssetBundleName(
-        //         AssetBundleUtility.PackagePathToAssetsPath("Scenes/LoginScene.unity"));
-        // AssetBundleManager.Instance.SetAssetBundleResident(sceneAssetbundleName, true);
-        // sceneAbloader = AssetBundleManager.Instance.LoadAssetBundleAsync(sceneAssetbundleName);
-        // yield return sceneAbloader;
-        // sceneAbloader.Dispose();
-
         string luaAssetbundleName = XLuaManager.Instance.AssetbundleName;
         AssetBundleManager.Instance.SetAssetBundleResident(luaAssetbundleName, true);
         var abloader = AssetBundleManager.Instance.LoadAssetBundleAsync(luaAssetbundleName, typeof(TextAsset));

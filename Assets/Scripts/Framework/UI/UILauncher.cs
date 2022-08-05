@@ -1,7 +1,9 @@
-
 using UnityEngine;
 using UnityEngine.UI;
+using XLua;
 
+[Hotfix]
+[LuaCallCSharp]
 public class UILauncher : Singleton<UILauncher>
 {
     private GameObject go;
@@ -10,10 +12,7 @@ public class UILauncher : Singleton<UILauncher>
 
     public GameObject UIGameObject
     {
-        get
-        {
-            return go;
-        }
+        get { return go; }
         set
         {
             if (value != go)
@@ -30,7 +29,7 @@ public class UILauncher : Singleton<UILauncher>
         slider = go.transform.Find("ContentRoot/SliderBar").GetComponent<Slider>();
         slider.gameObject.SetActive(false);
     }
-    
+
     public void SetSatus(string status)
     {
         statusText.text = status;

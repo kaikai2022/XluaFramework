@@ -11,68 +11,76 @@ local unpack = unpack or table.unpack
 -- @init：起始位置
 -- @plain：为true禁用pattern模式匹配；为false则开启模式匹配
 local function split(split_string, pattern, search_pos_begin, plain)
-	assert(type(split_string) == "string")
-	assert(type(pattern) == "string" and #pattern > 0)
-	search_pos_begin = search_pos_begin or 1
-	plain = plain or true
-	local split_result = {}
+    assert(type(split_string) == "string")
+    assert(type(pattern) == "string" and #pattern > 0)
+    search_pos_begin = search_pos_begin or 1
+    plain = plain or true
+    local split_result = {}
 
-	while true do
-		local find_pos_begin, find_pos_end = string.find(split_string, pattern, search_pos_begin, plain)
-		if not find_pos_begin then
-			break
-		end
-		local cur_str = ""
-		if find_pos_begin > search_pos_begin then
-			cur_str = string.sub(split_string, search_pos_begin, find_pos_begin - 1)
-		end
-		split_result[#split_result + 1] = cur_str
-		search_pos_begin = find_pos_end + 1
-	end
+    while true do
+        local find_pos_begin, find_pos_end = string.find(split_string, pattern, search_pos_begin, plain)
+        if not find_pos_begin then
+            break
+        end
+        local cur_str = ""
+        if find_pos_begin > search_pos_begin then
+            cur_str = string.sub(split_string, search_pos_begin, find_pos_begin - 1)
+        end
+        split_result[#split_result + 1] = cur_str
+        search_pos_begin = find_pos_end + 1
+    end
 
-	if search_pos_begin <= string.len(split_string) then
-		split_result[#split_result + 1] = string.sub(split_string, search_pos_begin)
-	else
-		split_result[#split_result + 1] = ""
-	end
+    if search_pos_begin <= string.len(split_string) then
+        split_result[#split_result + 1] = string.sub(split_string, search_pos_begin)
+    else
+        split_result[#split_result + 1] = ""
+    end
 
-	return split_result
+    return split_result
 end
 
 -- 字符串连接
 function join(join_table, joiner)
-	if #join_table == 0 then
-		return ""
-	end
+    if #join_table == 0 then
+        return ""
+    end
 
-	local fmt = "%s"
-	for i = 2, #join_table do
-		fmt = fmt .. joiner .. "%s"
-	end
+    local fmt = "%s"
+    for i = 2, #join_table do
+        fmt = fmt .. joiner .. "%s"
+    end
 
-	return string.format(fmt, unpack(join_table))
+    return string.format(fmt, unpack(join_table))
 end
 
 -- 是否包含
 -- 注意：plain为true时，关闭模式匹配机制，此时函数仅做直接的 “查找子串”的操作
 function contains(target_string, pattern, plain)
-	plain = plain or true
-	local find_pos_begin, find_pos_end = string.find(target_string, pattern, 1, plain)
-	return find_pos_begin ~= nil
+    plain = plain or true
+    local find_pos_begin, find_pos_end = string.find(target_string, pattern, 1, plain)
+    return find_pos_begin ~= nil
 end
 
 -- 以某个字符串开始
 function startswith(target_string, start_pattern, plain)
-	plain = plain or true
-	local find_pos_begin, find_pos_end = string.find(target_string, start_pattern, 1, plain)
-	return find_pos_begin == 1
+    plain = plain or true
+    local find_pos_begin, find_pos_end = string.find(target_string, start_pattern, 1, plain)
+    return find_pos_begin == 1
 end
 
 -- 以某个字符串结尾
 function endswith(target_string, start_pattern, plain)
-	plain = plain or true
-	local find_pos_begin, find_pos_end = string.find(target_string, start_pattern, -#start_pattern, plain)
-	return find_pos_end == #target_string
+    plain = plain or true
+    local find_pos_begin, find_pos_end = string.find(target_string, start_pattern, -#start_pattern, plain)
+    return find_pos_end == #target_string
+end
+
+-- 判断某个string是不是空
+function isNilOrEmpty(string_)
+    if not string_ or string_ == "" or string.match(string_, "^%s+$") == string_ then
+        return true
+    end
+    return false
 end
 
 string.split = split
@@ -80,3 +88,4 @@ string.join = join
 string.contains = contains
 string.startswith = startswith
 string.endswith = endswith
+string.isNilOrEmpty = isNilOrEmpty
