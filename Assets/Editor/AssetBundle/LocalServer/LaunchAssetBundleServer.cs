@@ -72,6 +72,7 @@ namespace AssetBundles
 
         static void Run()
         {
+            return;
             string args = string.Format("\"{0}\" {1}", AssetBundleConfig.LocalSvrAppWorkPath,
                 Process.GetCurrentProcess().Id);
             ProcessStartInfo startInfo = ExecuteInternalMono.GetProfileStartInfoForMono(
