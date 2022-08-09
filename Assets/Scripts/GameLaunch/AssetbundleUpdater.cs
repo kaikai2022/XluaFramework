@@ -72,13 +72,14 @@ public class AssetbundleUpdater : MonoBehaviour
         // 初始化本地版本信息
         InitLocalVersion();
 #if UNITY_WEBGL
-        yield break;
+        yield return UpdateFinish(false);
 #endif
 
 #if UNITY_EDITOR
         if (AssetBundleConfig.IsEditorMode)
         {
-            yield break;
+            // yield break;
+            yield return UpdateFinish(false);
         }
 #endif
 
@@ -374,14 +375,11 @@ public class AssetbundleUpdater : MonoBehaviour
     {
         UILauncher.Instance.SetSatus("正在检测资源更新...");
         UILauncher.Instance.SetValue(0);
-        
+
         string saveName = string.Format(APK_FILE_PATH, ChannelManager.Instance.channelName, serverAppVersion);
         Logger.Log(string.Format("Download game : {0}", saveName));
         ChannelManager.Instance.StartDownloadGame(URLSetting.APP_DOWNLOAD_URL, DownloadGameSuccess, DownloadGameFail,
-            (int progress) =>
-            {
-                UILauncher.Instance.SetValue(progress);
-            }, saveName);
+            (int progress) => { UILauncher.Instance.SetValue(progress); }, saveName);
     }
 
     void DownloadGameSuccess()
@@ -509,6 +507,15 @@ public class AssetbundleUpdater : MonoBehaviour
             // 重启资源管理器
             yield return AssetBundleManager.Instance.Cleanup();
             yield return AssetBundleManager.Instance.Initialize();
+            yield return new WaitForFixedUpdate();
+            Logger.Log("Restart C#");
+
+            XLuaManager.Instance.IsResetEnterLua = true;
+        }
+        else
+        {
+            Logger.Log("EnterGame C#");
+            XLuaManager.Instance.IsEnterGaming = true;
         }
 
         Logger.Log(string.Format("UpdateFinish use {0}ms", (DateTime.Now - start).Milliseconds));

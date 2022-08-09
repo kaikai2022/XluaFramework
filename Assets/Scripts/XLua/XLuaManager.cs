@@ -1,4 +1,6 @@
-﻿using AssetBundles;
+﻿using System.Collections;
+using System.Collections.Generic;
+using AssetBundles;
 using System.IO;
 using UnityEngine;
 using XLua;
@@ -129,7 +131,10 @@ public class XLuaManager : MonoSingleton<XLuaManager>
         SafeDoString("HotfixMain.Stop()");
     }
 
-    public void StartGame()
+    /// <summary>
+    /// 进入Lua的开始界面
+    /// </summary>
+    public void StartToLuaSprite()
     {
         if (luaEnv != null)
         {
@@ -137,6 +142,15 @@ public class XLuaManager : MonoSingleton<XLuaManager>
             SafeDoString("GameMain.Start()");
             HasGameStart = true;
         }
+    }
+
+    /// <summary>
+    /// Lua更界面跑完 在开始进入游戏中
+    /// </summary>
+    public void StartEnterGame()
+    {
+        LoadScript(gameMainScriptName);
+        SafeDoString("GameMain.EnterGame()");
     }
 
     public void ReloadScript(string scriptName)
@@ -185,6 +199,8 @@ public class XLuaManager : MonoSingleton<XLuaManager>
         return null;
     }
 
+    private float timer = 0;
+
     private void Update()
     {
         if (luaEnv != null)
@@ -195,6 +211,33 @@ public class XLuaManager : MonoSingleton<XLuaManager>
             {
                 luaEnv.FullGc();
             }
+        }
+
+        if (disposeLuaEnvs.Count > 0)
+        {
+            timer += Time.deltaTime;
+            if (timer > 10)
+            {
+                timer = 0;
+                for (int index = disposeLuaEnvs.Count - 1; index >= 0; index--)
+                {
+                    var tempLuaEnv = disposeLuaEnvs[index];
+                    try
+                    {
+                        tempLuaEnv.Dispose();
+                        disposeLuaEnvs.Remove(tempLuaEnv);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        string msg = string.Format("xLua Dispose error: {0}\n {1}", ex.Message, ex.StackTrace);
+                        Logger.LogError(msg, null);
+                    }
+                }
+            }
+        }
+        else
+        {
+            timer = 0;
         }
     }
 
@@ -214,6 +257,8 @@ public class XLuaManager : MonoSingleton<XLuaManager>
         }
     }
 
+    private List<LuaEnv> disposeLuaEnvs = new List<LuaEnv>();
+
     public override void Dispose()
     {
         if (luaUpdater != null)
@@ -232,7 +277,47 @@ public class XLuaManager : MonoSingleton<XLuaManager>
             {
                 string msg = string.Format("xLua exception : {0}\n {1}", ex.Message, ex.StackTrace);
                 Logger.LogError(msg, null);
+                disposeLuaEnvs.Add(luaEnv);
             }
         }
     }
+    
+    
+    IEnumerator ResetRunGame()
+    {
+        yield return new WaitForFixedUpdate();
+        string luaAssetbundleName = XLuaManager.Instance.AssetbundleName;
+        AssetBundleManager.Instance.SetAssetBundleResident(luaAssetbundleName, true);
+        var abloader = AssetBundleManager.Instance.LoadAssetBundleAsync(luaAssetbundleName, typeof(TextAsset));
+        yield return abloader;
+        abloader.Dispose();
+
+        Restart();
+        StartHotfix();
+        StartToLuaSprite();
+    }
+    
+    public bool IsResetEnterLua { get; set; }
+    public bool IsEnterGaming { get; set; }
+
+    IEnumerator RunGame()
+    {
+        yield return new WaitForFixedUpdate();
+        XLuaManager.Instance.StartEnterGame();
+    }
+
+    private void LateUpdate()
+    {
+        if (IsResetEnterLua)
+        {
+            IsResetEnterLua = false;
+            StartCoroutine(ResetRunGame());
+        }
+        else if (IsEnterGaming)
+        {
+            IsEnterGaming = false;
+            StartCoroutine(RunGame());
+        }
+    }
+    
 }

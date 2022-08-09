@@ -6,7 +6,7 @@
 -- 窗口配置
 local UILoading = {
 	Name = UIWindowNames.UILoading,
-	Layer = UILayers.TopLayer,
+	Layer = UILayers.BackgroudLayer,
 	Model = require "UI.UILoading.Model.UILoadingModel",
 	Ctrl = nil,
 	View = require "UI.UILoading.View.UILoadingView",

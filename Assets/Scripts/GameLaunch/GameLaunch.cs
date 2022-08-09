@@ -67,7 +67,7 @@ public class GameLaunch : MonoBehaviour
 //         Logger.Log(string.Format("Load noticeTipPrefab use {0}ms", (DateTime.Now - start).Milliseconds));
 //             
 // #if PLATFORM_ANDROID
-//         if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+         if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
 //         {
 //             Permission.RequestUserPermission(Permission.Microphone);
 //         }
@@ -236,8 +236,9 @@ public class GameLaunch : MonoBehaviour
 
         XLuaManager.Instance.OnInit();
         XLuaManager.Instance.StartHotfix();
-        XLuaManager.Instance.StartGame();
+        XLuaManager.Instance.StartToLuaSprite();
 
         CustomDataStruct.Helper.Startup();
     }
+
 }

@@ -25,6 +25,8 @@ local function CoInnerSwitchScene(self, scene_config)
 	local uimgr_instance = UIManager:GetInstance()
 	uimgr_instance:OpenWindow(UIWindowNames.UILoading)
 	local window = uimgr_instance:GetWindow(UIWindowNames.UILoading)
+	--等待Loading界面加载完成
+	coroutine.waitwhile(function() return window.IsLoading end)
 	local model = window.Model
 	model.value = 0
 	coroutine.waitforframes(1)

@@ -4,13 +4,16 @@ require "Global.Global"
 -- 定义为全局模块，整个lua程序的入口类
 GameMain = {};
 
+local LuachGameObject
+
 local AssetBundleManager = CS.AssetBundles.AssetBundleManager.Instance
 -- 进入游戏
 local function EnterGame()
-
+    GameObject.Destroy(LuachGameObject.gameObject);
     -- luaide 调试
     -- local breakInfoFun,xpcallFun = require("LuaDebug")("localhost", 7003)
     -- luaide 调试
+    Logger.Log("EnterGame... hahah")
 
     -- TODO：服务器信息应该从服务器上拉取，这里读取测试数据
     local ServerData = require "DataCenter.ServerData.ServerData"
@@ -25,11 +28,14 @@ local function EnterGame()
     SceneManager:GetInstance():SwitchScene(SceneConfig.LoginScene)
 end
 
+
 --主入口函数。从这里开始lua逻辑
 local function Start()
     Logger.Log("GameMain start...")
 
-    local gameLaunch = CS.UnityEngine.GameObject.Find("GameLuach"):GetComponent(typeof(CS.GameLaunch))
+    GameMain.gameLaunch = CS.UnityEngine.GameObject.Find("GameLuach"):GetComponent(typeof(CS.GameLaunch))
+    LuachGameObject = GameMain.gameLaunch.transform:Find("UIRoot/TopLayer/Luach")
+    LuachGameObject.gameObject:SetActive(true);
     --if gameLaunch:IsUpdateFinal() then
     --    -- 模块启动
     UpdateManager:GetInstance():Startup()
@@ -84,12 +90,16 @@ function GameMain.InitLaunchPrefab()
     --end)
 
     local loadingGameObject = ResourcesManager:GetInstance():CoLoadAsync(launchPrefabPath, typeof(CS.UnityEngine.GameObject))
-    coroutine.waitforfixedupdate()
+    --coroutine.waitforfixedupdate()
     local go = CS.UnityEngine.GameObject.Instantiate(loadingGameObject)
     CS.UILauncher.Instance.UIGameObject = go
     UIManager:GetInstance():OpenWindow(UIWindowNames.UILoading)
     local loadingWin = UIManager:GetInstance():GetWindow(UIWindowNames.UILoading)
+    coroutine.waitwhile(function()
+        return loadingWin.IsLoading
+    end)
     GameMain.update = loadingWin.View.gameObject:AddComponent(typeof(CS.AssetbundleUpdater))
+    LuachGameObject.gameObject:SetActive(false)
 end
 
 ---private GameMain.InitAppVersion 初始化App版本
@@ -182,36 +192,69 @@ end
 
 ---@private GameMain.InitNoticeTipPrefab 初始化弹窗提示框
 function GameMain.InitNoticeTipPrefab()
-    local noticeTipPrefabPath = "UI/Prefabs/Common/UINoticeTip.prefab"
-    local loader = AssetBundleManager:LoadAssetAsync(noticeTipPrefabPath, typeof(GameObject))
-    coroutine.waitforasyncop(loader)
-    local noticeTipPrefab = loader.asset
-    loader:Dispose()
-    if (noticeTipPrefab == null) then
-        Logger.LogError("LoadAssetAsync noticeTipPrefab err : " + noticeTipPrefabPath);
-        coroutine.yieldbreak()
-    end
-    local go = GameObject.Instantiate(noticeTipPrefab)
-    CS.UINoticeTip.Instance.UIGameObject = go
+    --local noticeTipPrefabPath = "UI/Prefabs/Common/UINoticeTip.prefab"
+    --local loader = AssetBundleManager:LoadAssetAsync(noticeTipPrefabPath, typeof(GameObject))
+    --coroutine.waitforasyncop(loader)
+    --local noticeTipPrefab = loader.asset
+    --loader:Dispose()
+    --if (noticeTipPrefab == null) then
+    --    Logger.LogError("LoadAssetAsync noticeTipPrefab err : " + noticeTipPrefabPath);
+    --    coroutine.yieldbreak()
+    --end
+    --local LaunchLayerPath = "UIRoot/TopLayer";
+    --
+    --local go = GameObject.Instantiate(noticeTipPrefab, GameMain.gameLaunch.transform:Find(LaunchLayerPath))
+    --go.name = noticeTipPrefab.name
+
+    UIManager:GetInstance():OpenWindow(UIWindowNames.UINoticeTip, function(arge)
+        Logger.Log("OpenWins", arge)
+    end)
+    local loadingWin = UIManager:GetInstance():GetWindow(UIWindowNames.UINoticeTip)
+    coroutine.waitwhile(function()
+        return loadingWin.IsLoading
+    end)
+
+    CS.UINoticeTip.Instance.UIGameObject = loadingWin.View.gameObject
+    UIManager:GetInstance():CloseWindow(UIWindowNames.UINoticeTip)
     coroutine.waitforframes(1)
 end
 
 ---@private GameMain.GetPermission 获取权限
 function GameMain.GetPermission()
-    if CS.UnityEngine.Application.platform == CS.UnityEngine.RuntimePlatform.Android and not CS.UnityEngine.Android.Permission.HasUserAuthorizedPermission(Permission.Microphone) then
-        Permission.RequestUserPermission(Permission.Microphone)
+    Logger.Log("获取权限")
+    Logger.Log(CS.UnityEngine.Application.platform)
+    if CS.UnityEngine.Application.platform == CS.UnityEngine.RuntimePlatform.Android
+    --        and (
+    --        not CS.UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.ExternalStorageWrite)
+    --        or 
+    --        not CS.UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.ExternalStorageRead)
+    --)
+    then
+        Logger.Log(CS.UnityEngine.RuntimePlatform.Android)
+        if not CS.UnityEngine.Android.Permission.HasUserAuthorizedPermission(CS.UnityEngine.Android.Permission.ExternalStorageRead) then
+            CS.UnityEngine.Android.Permission.RequestUserPermission(CS.UnityEngine.Android.Permission.ExternalStorageRead)
+            print("获取 Android 读取权限")
+        end
+        if not CS.UnityEngine.Android.Permission.HasUserAuthorizedPermission(CS.UnityEngine.Android.Permission.ExternalStorageWrite) then
+            CS.UnityEngine.Android.Permission.RequestUserPermission(CS.UnityEngine.Android.Permission.ExternalStorageWrite)
+            print("获取 Android 写入权限")
+        end
     end
+    Logger.Log("获取权限结束")
 end
 
 ---@private  GameMain.UpdateAssetRes 更新资源
 function GameMain.StartUpdateAssetRes()
     local start = GameMain.update:StartCheckUpdate()
     require('XLua.Common.cs_coroutine').yield_return(start)
-    Logger.Log("更新完成 ！！！！！")
+    Logger.Log("更新完成 ！！！！！清理更新的界面 遗留下的界面")
+    UIManager:GetInstance():DestroyAllWindow(true);
+    Logger.Log("更新完成 ！！！！！清理更新的界面 遗留下的界面 完成")
 end
 
 ---@private GameMain.UpdateRes 更新资源
 function GameMain.UpdateRes()
+    GameMain.GetPermission()
     GameMain.InitLaunchPrefab()
     GameMain.InitAppVersion()
     GameMain.InitChannel()
@@ -224,5 +267,7 @@ end
 GameMain.Start = Start
 GameMain.OnLevelWasLoaded = OnLevelWasLoaded
 GameMain.OnApplicationQuit = OnApplicationQuit
+
+GameMain.EnterGame = EnterGame
 
 return GameMain
