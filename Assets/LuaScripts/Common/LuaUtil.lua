@@ -44,7 +44,7 @@ function Bind(self, func, ...)
 	end
 	return function(...)
 		local args = ConcatSafePack(params, SafePack(...))
-		func(SafeUnpack(args))
+		return func(SafeUnpack(args))
 	end
 end
 

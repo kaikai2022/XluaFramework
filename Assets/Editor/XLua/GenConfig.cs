@@ -76,12 +76,19 @@
             typeof(UnityEngine.UI.GridLayoutGroup),
             typeof(UnityEngine.UI.ContentSizeFitter),
             typeof(UnityEngine.UI.Slider),
+
             typeof(UIPointerClick),
             typeof(UIPointerDoubleClick),
             typeof(UIPointerDownUp),
             typeof(UIPointerLongPress),
 
             typeof(UnityEngine.U2D.SpriteAtlas),
+
+            //TMPro TextMeshPro
+            typeof(TMPro.TextMeshProUGUI),
+            typeof(TMPro.TextMeshPro),
+            
+            typeof(ComponentExtensions),
 
             // easy touch
             // TODO：后续需要什么脚本再添加进来
@@ -100,6 +107,74 @@
             // 其它
             typeof(UnityEngine.PlayerPrefs),
             typeof(System.GC),
+
+            //Do Tween
+            typeof(DG.Tweening.AutoPlay),
+            typeof(DG.Tweening.AxisConstraint),
+            typeof(DG.Tweening.Ease),
+            typeof(DG.Tweening.LogBehaviour),
+            typeof(DG.Tweening.LoopType),
+            typeof(DG.Tweening.PathMode),
+            typeof(DG.Tweening.PathType),
+            typeof(DG.Tweening.RotateMode),
+            typeof(DG.Tweening.ScrambleMode),
+            typeof(DG.Tweening.TweenType),
+            typeof(DG.Tweening.UpdateType),
+
+            typeof(DG.Tweening.DOTween),
+            typeof(DG.Tweening.DOVirtual),
+            typeof(DG.Tweening.EaseFactory),
+            typeof(DG.Tweening.Tweener),
+            typeof(DG.Tweening.Tween),
+            typeof(DG.Tweening.Sequence),
+            typeof(DG.Tweening.TweenParams),
+            typeof(DG.Tweening.Core.ABSSequentiable),
+
+            typeof(DG.Tweening.Core.TweenerCore<UnityEngine.Vector3, UnityEngine.Vector3,
+                DG.Tweening.Plugins.Options.VectorOptions>),
+
+            typeof(DG.Tweening.TweenCallback),
+            typeof(DG.Tweening.TweenExtensions),
+            typeof(DG.Tweening.TweenSettingsExtensions),
+            typeof(DG.Tweening.ShortcutExtensions),
+            // typeof(DG.Tweening.ShortcutExtensions43),
+            // typeof(DG.Tweening.ShortcutExtensions46),
+            // typeof(DG.Tweening.ShortcutExtensions50),
+
+            //dotween pro 的功能
+            typeof(DG.Tweening.DOTweenPath),
+            typeof(DG.Tweening.DOTweenVisualManager),
+
+            // SuperScrollView 
+            typeof(SuperScrollView.ClickEventListener),
+            typeof(SuperScrollView.SnapStatus),
+            typeof(SuperScrollView.ItemCornerEnum),
+            typeof(SuperScrollView.ListItemArrangeType),
+            typeof(SuperScrollView.GridItemArrangeType),
+            typeof(SuperScrollView.GridFixedType),
+            typeof(SuperScrollView.RowColumnPair),
+            typeof(SuperScrollView.ItemSizeGroup),
+            typeof(SuperScrollView.ItemPosMgr),
+            typeof(SuperScrollView.GridItemGroup),
+            typeof(SuperScrollView.GridItemPool),
+            typeof(SuperScrollView.GridViewItemPrefabConfData),
+            typeof(SuperScrollView.LoopGridViewInitParam),
+            typeof(SuperScrollView.LoopGridViewSettingParam),
+            typeof(SuperScrollView.LoopGridView),
+            typeof(SuperScrollView.LoopGridViewItem),
+            typeof(SuperScrollView.ItemPool),
+            typeof(SuperScrollView.ItemPrefabConfData),
+            typeof(SuperScrollView.LoopListViewInitParam),
+            typeof(SuperScrollView.LoopListView2),
+            typeof(SuperScrollView.LoopListViewItem2),
+            typeof(SuperScrollView.StaggeredGridItemPrefabConfData),
+            typeof(SuperScrollView.StaggeredGridViewInitParam),
+            typeof(SuperScrollView.ItemIndexData),
+            typeof(SuperScrollView.GridViewLayoutParam),
+            typeof(SuperScrollView.LoopStaggeredGridView),
+            typeof(SuperScrollView.LoopStaggeredGridViewItem),
+            typeof(SuperScrollView.StaggeredGridItemGroup),
+            typeof(SuperScrollView.StaggeredGridItemPool),
         };
 
     //C#静态调用Lua的配置（包括事件的原型），仅可以配delegate，interface
@@ -115,6 +190,21 @@
             typeof(UnityEngine.Events.UnityAction),
             typeof(System.Collections.IEnumerator),
             typeof(UnityEngine.Events.UnityAction<UnityEngine.Vector2>),
+
+            typeof(UI.GridPageView.UpdateGridItem),
+            
+            // SuperScrollView 
+            typeof(System.Func<SuperScrollView.LoopListView2, int, SuperScrollView.LoopListViewItem2>),
+            typeof(System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>),
+            typeof(System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>),
+            typeof(System.Action<SuperScrollView.LoopListViewItem2, object>),
+            typeof(System.Action<UnityEngine.GameObject>),
+            typeof(System.Action<UnityEngine.EventSystems.PointerEventData>),
+            typeof(System.Action<SuperScrollView.LoopGridView, SuperScrollView.LoopGridViewItem>),
+            typeof(System.Action<SuperScrollView.LoopGridView>),
+            typeof(System.Func<SuperScrollView.LoopGridView, int, int, int, SuperScrollView.LoopGridViewItem>),
+            typeof(System.Func<SuperScrollView.LoopStaggeredGridView, int, SuperScrollView.LoopStaggeredGridViewItem>),
+            typeof(System.Func<int, int, SuperScrollView.LoopStaggeredGridViewItem>),
         };
 
     //黑名单

@@ -4,25 +4,29 @@
 --]]
 
 local UIModule = {
-	-- 模块 = 模块配置表
-	UILogin = require "UI.UILogin.UILoginConfig",
-	UILoading = require "UI.UILoading.UILoadingConfig",
-	UINoticeTip = require "UI.UINoticeTip.UINoticeTipConfig",
-	UITestMain = require "UI.UITestMain.UITestMainConfig",
-	UIBattle = require "UI.UIBattle.UIBattleConfig",
-	UIBoard = require "UI.UIBoard.UIBoardConfig",
+    -- 模块 = 模块配置表
+    UILogin = require "UI.UILogin.UILoginConfig",
+    UILoading = require "UI.UILoading.UILoadingConfig",
+    UINoticeTip = require "UI.UINoticeTip.UINoticeTipConfig",
+    UITestMain = require "UI.UITestMain.UITestMainConfig",
+    UIBattle = require "UI.UIBattle.UIBattleConfig",
+    UIBoard = require "UI.UIBoard.UIBoardConfig",
+
+    --猜成语
+    UIGuessTheIdiom = require("UI.UIGuessTheIdiom.UIGuessTheIdiomStartConfig")
 }
 
 local UIConfig = {}
-for _,ui_module in pairs(UIModule) do 
-	for _,ui_config in pairs(ui_module) do
-		local ui_name = ui_config.Name
-		assert(UIConfig.ui_name == nil, "Aready exsits : "..ui_name)
-		if ui_config.View then
-			assert(ui_config.PrefabPath ~= nil and #ui_config.PrefabPath > 0, ui_name.." PrefabPath empty.")
-		end
-		UIConfig[ui_name] = ui_config
-	end
+for _, ui_module in pairs(UIModule) do
+    for _, ui_config in pairs(ui_module) do
+        local ui_name = ui_config.Name
+        assert(UIConfig.ui_name == nil, "Aready exsits : " .. ui_name)
+        if ui_config.View then
+            assert(ui_config.PrefabPath ~= nil and #ui_config.PrefabPath > 0, ui_name .. " PrefabPath empty.")
+        end
+        UIConfig[ui_name] = ui_config
+    end
 end
 
+---@class UIConfig 所有UI Scene中的所有ui
 return ConstClass("UIConfig", UIConfig)

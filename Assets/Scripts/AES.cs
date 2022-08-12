@@ -1,3 +1,5 @@
+using XLua;
+
 namespace AESEncrypt
 {
     using System;
@@ -5,7 +7,9 @@ namespace AESEncrypt
     using System.Security.Cryptography;
     using System.Text;
     using UnityEngine;
-
+    
+    [Hotfix]
+    [LuaCallCSharp]
     public class AES
     {
         // 加密识别头（用来识别文件是否已经加密过）

@@ -16,16 +16,23 @@ local function EnterGame()
     Logger.Log("EnterGame... hahah")
 
     -- TODO：服务器信息应该从服务器上拉取，这里读取测试数据
-    local ServerData = require "DataCenter.ServerData.ServerData"
-    local TestServerData = require "GameTest.DataTest.TestServerData"
-    local ClientData = require "DataCenter.ClientData.ClientData"
-    ServerData:GetInstance():ParseServerList(TestServerData)
-    local selected = ClientData:GetInstance().login_server_id
-    if selected == nil or ServerData:GetInstance().servers[selected] == nil then
-        ClientData:GetInstance():SetLoginServerID(10001)
-    end
+    --local ServerData = require "DataCenter.ServerData.ServerData"
+    --local TestServerData = require "GameTest.DataTest.TestServerData"
+    --local ClientData = require "DataCenter.ClientData.ClientData"
+    --ServerData:GetInstance():ParseServerList(TestServerData)
+    --local selected = ClientData:GetInstance().login_server_id
+    --if selected == nil or ServerData:GetInstance().servers[selected] == nil then
+    --    ClientData:GetInstance():SetLoginServerID(10001)
+    --end
 
-    SceneManager:GetInstance():SwitchScene(SceneConfig.LoginScene)
+    --SceneManager:GetInstance():SwitchScene(SceneConfig.LoginScene)
+
+    --package.cpath = package.cpath .. ';/Users/lucus/Library/Application Support/JetBrains/Rider2021.1/plugins/EmmyLua/debugger/emmy/mac/?.dylib'
+    --local dbg = require('emmy_core')
+    --dbg.tcpConnect('localhost', 9966)
+    
+    SceneManager:GetInstance():SwitchScene(SceneConfig.GuessTheIdiomStartScene)
+
 end
 
 
@@ -42,6 +49,7 @@ local function Start()
     TimerManager:GetInstance():Startup()
     LogicUpdater:GetInstance():Startup()
     UIManager:GetInstance():Startup()
+
     --
     --    -- if Config.Debug then
     --    --    -- 单元测试

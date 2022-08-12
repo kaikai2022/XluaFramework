@@ -67,7 +67,7 @@ public class GameLaunch : MonoBehaviour
 //         Logger.Log(string.Format("Load noticeTipPrefab use {0}ms", (DateTime.Now - start).Milliseconds));
 //             
 // #if PLATFORM_ANDROID
-         if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+        if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
 //         {
 //             Permission.RequestUserPermission(Permission.Microphone);
 //         }
@@ -79,8 +79,8 @@ public class GameLaunch : MonoBehaviour
 //         Destroy(updater);
 //         yield return null;
 
-        // 启动xlua框架
-        start = DateTime.Now;
+            // 启动xlua框架
+            start = DateTime.Now;
         XLuaManager.Instance.Startup();
         yield return StartGame();
         Logger.Log(string.Format("XLuaManager StartUp use {0}ms", (DateTime.Now - start).Milliseconds));
@@ -237,8 +237,6 @@ public class GameLaunch : MonoBehaviour
         XLuaManager.Instance.OnInit();
         XLuaManager.Instance.StartHotfix();
         XLuaManager.Instance.StartToLuaSprite();
-
         CustomDataStruct.Helper.Startup();
     }
-
 }

@@ -7,37 +7,45 @@
 --]]
 
 local SceneConfig = {
-	-- 启动场景
-	LaunchScene = {
-		-- level、name对应于BuldSetting中添加的场景
-		Level = 0,
-		Name = "LaunchScene",
-		Type = nil,
-	},
-	-- 加载场景
-	LoadingScene = {
-		Level = 1,
-		Name = "LoadingScene",
-		Type = nil,
-	},
-	-- 登陆场景
-	LoginScene = {
-		Level = 2,
-		Name = "LoginScene",
-		Type = require "Scenes.LoginScene",
-	},
-	-- 主页场景
-	HomeScene = {
-		Level = 3,
-		Name = "HomeScene",
-		Type = require "Scenes.HomeScene",
-	},
-	-- 战斗场景
-	BattleScene = {
-		Level = 4,
-		Name = "BattleScene",
-		Type = require "Scenes.BattleScene",
-	},
+    -- 启动场景
+    LaunchScene = {
+        -- level、name对应于BuldSetting中添加的场景
+        Level = 0,
+        Name = "LaunchScene",
+        Type = nil,
+    },
+    -- 加载场景
+    LoadingScene = {
+        Level = 1,
+        Name = "LoadingScene",
+        Type = nil,
+    },
+    -- 登陆场景
+    LoginScene = {
+        Level = 2,
+        Name = "LoginScene",
+        Type = require "Scenes.LoginScene",
+    },
+    -- 主页场景
+    HomeScene = {
+        Level = 3,
+        Name = "HomeScene",
+        Type = require "Scenes.HomeScene",
+    },
+    -- 战斗场景
+    BattleScene = {
+        Level = 4,
+        Name = "BattleScene",
+        Type = require "Scenes.BattleScene",
+    },
+
+    --猜谜语场景 开始界面
+    GuessTheIdiomStartScene = {
+        ---热更新 的场景
+        SceneABPath = "MinniGames/GuessTheIdiom/GuessTheIdiomStartScene.unity",
+        Name = "GuessTheIdiomStartScene",
+        Type = require "Scenes.GuessTheIdiom.GuessTheIdiomStartScene",
+    }
 }
 
 return ConstClass("SceneConfig", SceneConfig)

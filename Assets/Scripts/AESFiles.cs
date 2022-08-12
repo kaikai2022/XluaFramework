@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using XLua;
 
 namespace AESEncrypt
 {
+    [Hotfix]
+    [LuaCallCSharp]
     public partial class FileGet
     {
         /// <summary>

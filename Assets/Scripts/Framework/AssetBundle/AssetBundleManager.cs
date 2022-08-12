@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
+
 #endif
 
 /// <summary>
@@ -275,7 +276,8 @@ namespace AssetBundles
                     {
                         var assetPath = AssetBundleUtility.PackagePathToAssetsPath(assetName);
                         // var asset = curAssetbundle == null ? null : curAssetbundle.LoadAsset(assetPath, assetType);
-                        AddAssetCache(assetName, null);
+                        // var scenePaths = curAssetbundle.GetAllScenePaths();
+                        AddAssetCache(assetName, curAssetbundle);
                     }
                 }
             }

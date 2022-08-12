@@ -132,6 +132,7 @@ lua.assetbundle,Lua/Resource/Config/AtlasConfig.lua.bytes
 lua.assetbundle,Lua/Resource/Config/EffectConfig.lua.bytes
 lua.assetbundle,Lua/Scenes/BattleScene.lua.bytes
 lua.assetbundle,Lua/Scenes/Config/SceneConfig.lua.bytes
+lua.assetbundle,Lua/Scenes/GuessTheIdiom/GuessTheIdiomStartScene.lua.bytes
 lua.assetbundle,Lua/Scenes/HomeScene.lua.bytes
 lua.assetbundle,Lua/Scenes/LoginScene.lua.bytes
 lua.assetbundle,Lua/UI/Config/UIConfig.lua.bytes
@@ -184,7 +185,18 @@ lua.assetbundle,Lua/XLua/Perf/memory.lua.bytes
 lua.assetbundle,Lua/XLua/Perf/profiler.lua.bytes
 lua.assetbundle,Lua/XLua/Tdr/tdr.lua.bytes
 minnigames/guesstheidiom/bg_png.assetbundle,MinniGames/GuessTheIdiom/bg.png
-minnigames/guesstheidiom/guesstheidiomimages_spriteatlas.assetbundle,MinniGames/GuessTheIdiom/GuessTheIdiomImages.spriteatlas
+minnigames/guesstheidiom/common_spriteatlas.assetbundle,MinniGames/GuessTheIdiom/Common.spriteatlas
+minnigames/guesstheidiom/fonts.assetbundle,MinniGames/GuessTheIdiom/Fonts/leave_number.fnt
+minnigames/guesstheidiom/fonts.assetbundle,MinniGames/GuessTheIdiom/Fonts/leave_number.fontsettings
+minnigames/guesstheidiom/fonts.assetbundle,MinniGames/GuessTheIdiom/Fonts/leave_number_0.png
+minnigames/guesstheidiom/fonts.assetbundle,MinniGames/GuessTheIdiom/Fonts/STYuanti-SC-Bold SDF.asset
+minnigames/guesstheidiom/fonts.assetbundle,MinniGames/GuessTheIdiom/Fonts/STYuanti-SC-Bold.ttf
+minnigames/guesstheidiom/guesstheidiomstartscene_unity.assetbundle,MinniGames/GuessTheIdiom/GuessTheIdiomStartScene.unity
+minnigames/guesstheidiom/levelselectionimages_spriteatlas.assetbundle,MinniGames/GuessTheIdiom/LevelSelectionImages.spriteatlas
+minnigames/guesstheidiom/levelselectionprefab/btn_leva_prefab.assetbundle,MinniGames/GuessTheIdiom/LevelSelectionPrefab/btn_leva.prefab
+minnigames/guesstheidiom/startimages_spriteatlas.assetbundle,MinniGames/GuessTheIdiom/StartImages.spriteatlas
+minnigames/guesstheidiom/uilevelselection_prefab.assetbundle,MinniGames/GuessTheIdiom/UILevelSelection.prefab
+minnigames/guesstheidiom/uistartpaenl_prefab.assetbundle,MinniGames/GuessTheIdiom/UIStartPaenl.prefab
 models/1001.assetbundle,Models/1001/Character.prefab
 shaders.assetbundle,Shaders/Model/Particles-Add-R.shader
 shaders.assetbundle,Shaders/Model/Particles-Add-RGBA.shader
