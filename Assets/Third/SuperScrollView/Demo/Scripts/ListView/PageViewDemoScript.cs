@@ -152,6 +152,7 @@ namespace SuperScrollView
                 }
             }
 
+            Logger.Log("popopopo");
             Logger.Log(pageIndex);
             return item;
         }

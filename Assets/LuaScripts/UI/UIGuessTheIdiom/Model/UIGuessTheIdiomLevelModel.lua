@@ -8,24 +8,24 @@
 -- 4、OnEnable函数每次在窗口打开时调用，可传递参数用来初始化Model
 --]]
 local UIGuessTheIdiomLevelModel = BaseClass("UIGuessTheIdiomLevelModel", UIBaseModel)
-
+local IdiomConfig = require("UI.Config.IdiomConfig")
 
 local base = UIBaseModel-- 创建
 local function OnCreate(self)
-	base.OnCreate(self)
-	-- 窗口生命周期内保持的成员变量放这
+    base.OnCreate(self)
+    -- 窗口生命周期内保持的成员变量放这
+    self.idiomConfig = IdiomConfig
 end
 -- 打开
 local function OnEnable(self)
-	base.OnEnable(self)
-	-- 窗口关闭时可以清理的成员变量放这
+    base.OnEnable(self)
+    -- 窗口关闭时可以清理的成员变量放这
 end
 -- 关闭
 local function OnDestroy(self)
-	base.OnDestroy(self)
-	-- 清理成员变量
+    base.OnDestroy(self)
+    -- 清理成员变量
 end
-
 
 UIGuessTheIdiomLevelModel.OnCreate = OnCreate
 UIGuessTheIdiomLevelModel.OnEnable = OnEnable

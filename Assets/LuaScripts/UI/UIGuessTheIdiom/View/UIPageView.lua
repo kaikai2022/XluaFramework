@@ -30,7 +30,6 @@ function UIPageView:OnCreate(count, onGetItemByIndex, onSnapNearestChanged)
 end
 
 function UIPageView:_OnEndDrag()
-    Logger.Log("_OnEndDrag")
     local vec = self.mLoopListView.ScrollRect.velocity.x
     local curNearestItemIndex = self.mLoopListView.CurSnapNearestItemIndex
     local item = self.mLoopListView:GetShownItemByItemIndex(curNearestItemIndex)

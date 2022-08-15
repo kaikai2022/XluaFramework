@@ -16,10 +16,11 @@ local btn_right = "text_page/btn_right"
 local TMPro_page = "text_page"
 
 local page_content = "scroll_panel"
+
+local panelCounts = (3 * 8)
 local function OnCreate(self)
     base.OnCreate(self)
     -- 窗口生命周期内保持的成员变量放这
-
     self.btn_left = self:AddComponent(UIButton, btn_left)
     self.btn_left:SetOnClick(Bind(self, self._PreviousPage))
 
@@ -37,9 +38,16 @@ local function OnCreate(self)
             function(asset)
                 self.btn_leva_gameObject = asset
             end)
-    --self:InitLoopListView2()
-    self.pageView = self:AddComponent(UIPageView, page_content,
-            math.ceil(100 / (3 * 8)),
+
+    --self.pageView = self:AddComponent(UIPageView, page_content,
+    --        math.ceil(100 / (3 * 8)),
+    --        Bind(self, self.OnGetItemByIndex),
+    --        Bind(self, self.OnSnapNearestChanged)
+    --)
+
+    self.pageView = UIPageView.New(self, page_content)
+    self.pageView:OnCreate(
+            math.ceil(self.model.idiomConfig.Count / panelCounts),
             Bind(self, self.OnGetItemByIndex),
             Bind(self, self.OnSnapNearestChanged)
     )
@@ -71,11 +79,15 @@ UIGuessTheIdiomLevelView.OnDestroy = OnDestroy
 ---@private _NextPage 下一页
 function UIGuessTheIdiomLevelView:_NextPage()
     Logger.Log("下一页")
+    local curNearestItemIndex = self.pageView.mLoopListView.CurSnapNearestItemIndex + 1
+    self.pageView.mLoopListView:SetSnapTargetItemIndex(curNearestItemIndex)
 end
 
 ---@private _NextPage 上一页
 function UIGuessTheIdiomLevelView:_PreviousPage()
     Logger.Log("上一页")
+    local curNearestItemIndex = self.pageView.mLoopListView.CurSnapNearestItemIndex - 1
+    self.pageView.mLoopListView:SetSnapTargetItemIndex(curNearestItemIndex)
 end
 
 function UIGuessTheIdiomLevelView:OnGetItemByIndex(listView, pageIndex)
@@ -83,39 +95,41 @@ function UIGuessTheIdiomLevelView:OnGetItemByIndex(listView, pageIndex)
         Logger.Log("self.btn_leva_gameObject 没有初始化完成")
         return
     end
-    print(self.pageView.mPageCount)
     if (pageIndex < 0 or pageIndex >= self.pageView.mPageCount) then
         return
     end
-
+    Logger.Log(pageIndex)
     local item = listView:NewListViewItem("ItemPrefab");
+    Logger.Log(item.IsInitHandlerCalled)
+    local panelCounts = panelCounts
     if (not item.IsInitHandlerCalled) then
         item.IsInitHandlerCalled = true;
-        local panelCounts = 3 * 8
+        local userObjectData = {}
         for index = 1, panelCounts do
+            local tag = index + panelCounts * pageIndex
             local button = GameObject.Instantiate(self.btn_leva_gameObject, item.transform)
+            button.name = index
             button.transform.localScale = Vector3.New(1, 1, 1)
-
-            local ItemBtnLeave = ItemBtnLeave.New(self, button)
-            ItemBtnLeave:OnCreate()
-            ItemBtnLeave:SetLeave(index + panelCounts * pageIndex)
-            ItemBtnLeave:IsLock()
+            local itemBtnLeave = ItemBtnLeave.New(self, button)
+            itemBtnLeave:OnCreate(Bind(self, self.OnClickedItem))
+            itemBtnLeave:SetLeave(tag)
+            itemBtnLeave:IsLock()
+            userObjectData[index] = itemBtnLeave
+        end
+        item.UserObjectData = userObjectData
+    else
+        for index, itemBtnLeave in ipairs(item.UserObjectData) do
+            local tag = index + panelCounts * pageIndex
+            --itemBtnLeave:OnCreate()
+            itemBtnLeave:SetLeave(tag)
+            itemBtnLeave:IsLock()
         end
     end
     return item
 end
 
-function UIGuessTheIdiomLevelView:OnEndDrag()
-    print("触摸完成")
-    local vec = self.page_content_loop_list_view_2.ScrollRect.velocity.x;
-    local curNearestItemIndex = self.page_content_loop_list_view_2.CurSnapNearestItemIndex;
-    local item = self.page_content_loop_list_view_2.GetShownItemByItemIndex(curNearestItemIndex);
-    if (item == null) then
-
-        self.page_content_loop_list_view_2.ClearSnapData()
-        return
-    end
-
+function UIGuessTheIdiomLevelView:OnClickedItem(item)
+    Logger.Log(item.leave)
 end
 
 function UIGuessTheIdiomLevelView:UpdateAllDots()
