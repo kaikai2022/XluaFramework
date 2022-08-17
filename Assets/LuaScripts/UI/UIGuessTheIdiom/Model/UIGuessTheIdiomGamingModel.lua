@@ -9,25 +9,47 @@
 --]]
 local UIGuessTheIdiomGamingModel = BaseClass("UIGuessTheIdiomGamingModel", UIBaseModel)
 local IdiomConfig = require('UI.Config.IdiomConfig')
+local Idiom_UIMessageNames = require("UI.UIGuessTheIdiom.Idiom_UIMessageNames")
 
 local base = UIBaseModel-- 创建
 local function OnCreate(self)
-	base.OnCreate(self)
-	-- 窗口生命周期内保持的成员变量放这
+    base.OnCreate(self)
+    -- 窗口生命周期内保持的成员变量放这
 end
 -- 打开
 local function OnEnable(self)
-	base.OnEnable(self)
-	-- 窗口关闭时可以清理的成员变量放这
-	self.nowLeve = leve or IdiomConfig.getNowLeve()
-
+    base.OnEnable(self)
+    -- 窗口关闭时可以清理的成员变量放这
+    self.nowLeve = leve or IdiomConfig.getNowLeve()
 end
+
 -- 关闭
 local function OnDestroy(self)
-	base.OnDestroy(self)
-	-- 清理成员变量
+    base.OnDestroy(self)
+    -- 清理成员变量
 end
 
+---@public OnAddInputText 玩家输入了字
+function UIGuessTheIdiomGamingModel:OnAddInputText(text)
+    self:UIBroadcast(Idiom_UIMessageNames.ON_INPUT_TEXT, text)
+end
+
+---@public  OnRemoveInputText 删除文字
+function UIGuessTheIdiomGamingModel:OnRemoveInputText()
+    self:UIBroadcast(Idiom_UIMessageNames.ON_REMOVE_TEXT)
+end
+
+
+-- 监听数据
+function UIGuessTheIdiomGamingModel:OnAddListener()
+    base.OnAddListener(self)
+    --self:AddDataListener(DataMessageNames.ON_LOGIN_SERVER_ID_CHG, OnSelectedSvrChg)
+end
+
+function UIGuessTheIdiomGamingModel:OnRemoveListener()
+    base.OnRemoveListener(self)
+    --self:RemoveDataListener(DataMessageNames.ON_LOGIN_SERVER_ID_CHG, OnSelectedSvrChg)
+end
 
 UIGuessTheIdiomGamingModel.OnCreate = OnCreate
 UIGuessTheIdiomGamingModel.OnEnable = OnEnable

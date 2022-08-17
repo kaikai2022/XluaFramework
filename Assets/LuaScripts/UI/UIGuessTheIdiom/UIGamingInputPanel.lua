@@ -50,7 +50,7 @@ function UIGamingInputPanel:InitData(leave)
     end
 
     local function getStr()
-        return IdiomConfig[math.random(1, IdiomConfig.Count)]
+        return IdiomConfig.texts[math.random(1, #IdiomConfig.texts)]
     end
     for index = #texts, #self.textBtnList - 1 do
         local isOk = true
@@ -74,7 +74,7 @@ function UIGamingInputPanel:InitData(leave)
         texts[index] = temp
     end
     --dump(texts)
-    --Logger.Log(table.dump(texts))
+    Logger.Log(table.dump(texts))
     for index, btn_text in ipairs(self.textBtnList) do
         btn_text.text = texts[index]
     end

@@ -28,7 +28,7 @@ end
 
 ---@public AddText 添加一个文字
 function UIGamingWaitPanel:AddText(text)
-    assert(text)
+    assert(text, '添加的文字是nil')
     if #self.textStr >= #self.texts then
         return
     end

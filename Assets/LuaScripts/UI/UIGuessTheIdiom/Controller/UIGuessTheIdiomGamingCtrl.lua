@@ -8,4 +8,14 @@ function UIGuessTheIdiomGamingCtrl:OnClickNextGame()
     --self.model.NowLeve = self.model.NowLeve + 1
     Logger.Log("点击了下一关")
 end
+
+---@public OnClickInputText 玩家输入了文字
+function UIGuessTheIdiomGamingCtrl:OnClickInputText(text)
+    self.model:OnAddInputText(text)
+end
+
+function UIGuessTheIdiomGamingCtrl:OnClickRemoveText()
+    self.model:OnRemoveInputText()
+end
+
 return UIGuessTheIdiomGamingCtrl

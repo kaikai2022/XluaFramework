@@ -5,6 +5,8 @@
 ---
 
 local Idiom_UIMessageNames = {
+    ON_INPUT_TEXT = "OnInputText",---完输点击文字输入
+    ON_REMOVE_TEXT = "OnRemoveText",---完输点击文字输入
     
 }
 
