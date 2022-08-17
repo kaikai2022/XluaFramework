@@ -47,6 +47,7 @@ UILayer = require "Framework.UI.Component.UILayer"
 UICanvas = require "Framework.UI.Component.UICanvas"
 UIText = require "Framework.UI.Component.UIText"
 UIImage = require "Framework.UI.Component.UIImage"
+UIImage_Atlas = require "Framework.UI.Component.UIImage_Atlas"
 UISlider = require "Framework.UI.Component.UISlider"
 UIInput = require "Framework.UI.Component.UIInput"
 UIButton = require "Framework.UI.Component.UIButton"
@@ -98,6 +99,10 @@ SceneConfig = require "Scenes.Config.SceneConfig"
 AtlasConfig = require "Resource.Config.AtlasConfig"
 AtlasManager = require "Framework.Resource.AtlasManager"
 
+---新图集
+SpriteAtlasManager = require "Framework.Resource.SpriteAtlasManager"
+
+
 -- effect
 EffectConfig = require "Resource.Config.EffectConfig"
 BaseEffect = require "Framework.Resource.Effect.Base.BaseEffect"
@@ -113,6 +118,7 @@ ResourcesManager:GetInstance()
 UpdateManager:GetInstance()
 SceneManager:GetInstance()
 AtlasManager:GetInstance()
+SpriteAtlasManager:GetInstance()
 LogicUpdater:GetInstance()
 HallConnector:GetInstance()
 UIBoardManager:GetInstance()

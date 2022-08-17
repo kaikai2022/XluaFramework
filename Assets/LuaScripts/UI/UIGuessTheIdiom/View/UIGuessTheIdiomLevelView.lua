@@ -130,6 +130,7 @@ end
 
 function UIGuessTheIdiomLevelView:OnClickedItem(item)
     Logger.Log(item.leave)
+    UIManager:GetInstance():OpenWindow(UIWindowNames.UIGuessTheIdiomGaming, item.leave)
 end
 
 function UIGuessTheIdiomLevelView:UpdateAllDots()

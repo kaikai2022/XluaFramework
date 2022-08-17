@@ -22,7 +22,19 @@ local UIGuessTheIdiomLevel = {
     PrefabPath = "MinniGames/GuessTheIdiom/UILevelSelection2.prefab",
 }
 
+-- 游戏界面
+local UIGuessTheIdiomGaming = {
+    Name = UIWindowNames.UIGuessTheIdiomGaming,
+    Layer = UILayers.SceneLayer,
+    Model = require "UI.UIGuessTheIdiom.Model.UIGuessTheIdiomGamingModel",
+    Ctrl = require "UI.UIGuessTheIdiom.Controller.UIGuessTheIdiomGamingCtrl",
+    View = require "UI.UIGuessTheIdiom.View.UIGuessTheIdiomGamingView",
+    PrefabPath = "MinniGames/GuessTheIdiom/UIGuessTheIdiomGaming.prefab",
+}
+
 return {
     UIGuessTheIdiomStart = UIGuessTheIdiomStart,
     UIGuessTheIdiomLevel = UIGuessTheIdiomLevel,
+    UIGuessTheIdiomGaming = UIGuessTheIdiomGaming,
+
 }

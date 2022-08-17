@@ -23,6 +23,7 @@ local UIWindowNames = {
     -- 猜成语
     UIGuessTheIdiomStart = "UIGuessTheIdiomStart",
     UIGuessTheIdiomLevel = "UIGuessTheIdiomLevel",
+    UIGuessTheIdiomGaming = "UIGuessTheIdiomGaming",
 }
 
 return ConstClass("UIWindowNames", UIWindowNames)
