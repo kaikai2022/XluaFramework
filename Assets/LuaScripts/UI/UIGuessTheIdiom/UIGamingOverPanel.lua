@@ -6,10 +6,12 @@
 
 local UIGamingOverPanel = BaseClass("UIGamingOverPanel", UIBaseComponent)
 local base = UIBaseComponent
-local IdiomConfig = require('UI.Config.IdiomConfig')
-
-function UIGamingOverPanel:OnCreate(nextCallback)
+---@param model UIGuessTheIdiomGamingModel model
+function UIGamingOverPanel:OnCreate(model, nextCallback)
     base.OnCreate(self)
+    assert(model, 'model是空')
+    ---@field model UIGuessTheIdiomGamingModel 游戏的model
+    self.model = model
     self.btn_next = self.transform:Find("btn_next_idiom"):GetComponent("Button")
     if nextCallback then
         self.btn_next.onClick:AddListener(nextCallback)
@@ -33,12 +35,19 @@ function UIGamingOverPanel:SetNextCallback(nextCallback)
     end
 end
 
+---@public ShowOver 显示结束画面
+function UIGamingOverPanel:ShowOverPanel(isWin)
+    if isWin then
+        self:ShowCorrectPanel()
+    else
+        self:ShowWrongPanel()
+    end
+end
+
 ---@public ShowWrongPanel 显示打错了
 ---@param leave number 当前等级
-function UIGamingOverPanel:ShowWrongPanel(leave)
-    assert(leave, "leave 是空")
-    local idiom = IdiomConfig[leave]
-    self.wrong_text.text = idiom
+function UIGamingOverPanel:ShowWrongPanel()
+    self.wrong_text.text = self.model.idiom or ""
     self.wrong_panel_go:SetActive(true)
     self.correct_panel_go:SetActive(false)
     self:SetActive(true)
@@ -49,6 +58,10 @@ function UIGamingOverPanel:ShowCorrectPanel()
     self.wrong_panel_go:SetActive(false)
     self.correct_panel_go:SetActive(true)
     self:SetActive(true)
+end
+
+function UIGamingOverPanel:InitState()
+    self:SetActive(false)
 end
 
 return UIGamingOverPanel

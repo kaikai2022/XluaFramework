@@ -5,9 +5,16 @@
 ---
 
 local Idiom_UIMessageNames = {
-    ON_INPUT_TEXT = "OnInputText",---完输点击文字输入
-    ON_REMOVE_TEXT = "OnRemoveText",---完输点击文字输入
-    
 }
 
+---@alias ON_INPUT_TEXT string 输入文字通知
+Idiom_UIMessageNames.ON_INPUT_TEXT = "OnInputText" ---完输点击文字输入
+---@alias ON_REMOVE_TEXT string 删除文字
+Idiom_UIMessageNames.ON_REMOVE_TEXT = "OnRemoveText" ---完输点击文字输入
+---@alias ON_GAME_OVER string 游戏结束通知
+Idiom_UIMessageNames.ON_GAME_OVER = "OnGameOver" ---完输点击文字输入
+---@alias ON_GAME_START string 游戏开始通知
+Idiom_UIMessageNames.ON_GAME_START = "OnGameStart"
+
+---@class Idiom_UIMessageNames 猜谜语的UI通知
 return ConstClass("Idiom_UIMessageNames", Idiom_UIMessageNames)

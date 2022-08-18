@@ -7,28 +7,28 @@
 -- 3、游戏控制：发送网络请求、调用游戏控制逻辑函数
 -- 4、Ctrl层是无状态的，不能保存变量--调试模式下强制
 --]]
-
+---@class UIBaseCtrl UIBaseCtrl
 local UIBaseCtrl = BaseClass("UIBaseCtrl")
 
 local function __init(self, model)
-	assert(model ~= nil)
-	-- 强制不能直接写变量
-	if Config.Debug then
-		self.model = setmetatable({}, {
-			__index = model,
-			__newindex = function(tb, key, value)
-				if type(value) ~= "function" then
-					error("You can't save data here!", 2)
-				end
-			end
-		})
-	else
-		self.model = model
-	end
+    assert(model ~= nil)
+    -- 强制不能直接写变量
+    if Config.Debug then
+        self.model = setmetatable({}, {
+            __index = model,
+            __newindex = function(tb, key, value)
+                if type(value) ~= "function" then
+                    error("You can't save data here!", 2)
+                end
+            end
+        })
+    else
+        self.model = model
+    end
 end
 
 local function __delete(self)
-	self.model = nil
+    self.model = nil
 end
 
 UIBaseCtrl.__init = __init

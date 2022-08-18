@@ -40,9 +40,13 @@ end
 function UIImage_Atlas:ShowSpriteImg()
     assert(self.atlas_config, "没有找到图集")
     assert(self.sprite_name, "没有找到图片")
-    local sprite = SpriteAtlasManager:GetInstance():CoLoadImageAsync(self.atlas_config, self.sprite_name)
-    assert(sprite, "没有获取到图片资源")
-    self.unity_uiimage.sprite = sprite
+    --local sprite = SpriteAtlasManager:GetInstance():CoLoadImageAsync(self.atlas_config, self.sprite_name)
+    SpriteAtlasManager:GetInstance():LoadImageAsync(self.atlas_config, self.sprite_name, function(sprite)
+        assert(sprite, "没有获取到图片资源")
+        self.unity_uiimage.sprite = sprite
+    end)
+    --assert(sprite, "没有获取到图片资源")
+    --self.unity_uiimage.sprite = sprite
 end
 
 ---@public UIImage_Atlas.SetAtlas 设置图集

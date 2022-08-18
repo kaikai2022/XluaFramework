@@ -9,52 +9,56 @@
 -- 5、任何情况下不要在游戏逻辑代码操作界面刷新---除了打开、关闭界面
 --]]
 
+---@class UIBaseView UIBaseView
 local UIBaseView = BaseClass("UIBaseView", UIBaseContainer)
 local base = UIBaseContainer
 
 -- 构造函数：必须把基类需要的所有参数列齐---即使在这里不用，提高代码可读性
 -- 子类别再写构造函数，初始化工作放OnCreate
 local function __init(self, holder, var_arg, model, ctrl)
-	assert(model ~= nil)
-	assert(ctrl ~= nil)
-	self.ctrl = ctrl
-	-- 强制不能直接写Model层
-	if Config.Debug then
-		self.model = setmetatable({}, {
-			__index = model,
-			__newindex = function(tb, key, value)
-				error("You can't write model derectly!", 2)
-			end
-		})
-	else 
-		self.model = model
-	end
-	
-	-- 窗口画布
-	self.canvas = nil
-	-- 窗口基础order，窗口内添加的其它canvas设置的order都以它做偏移
-	self.base_order = 0
+    assert(model ~= nil)
+    assert(ctrl ~= nil)
+    ---@field ctrl UIBaseCtrl UI的控制器对象
+    self.ctrl = ctrl
+    -- 强制不能直接写Model层
+    if Config.Debug then
+        ---@field model UIBaseModel UI的Model对象
+        self.model = setmetatable({}, {
+            __index = model,
+            __newindex = function(tb, key, value)
+                error("You can't write model derectly!", 2)
+            end
+        })
+    else
+        ---@field model UIBaseModel UI的Model对象
+        self.model = model
+    end
+
+    -- 窗口画布
+    self.canvas = nil
+    -- 窗口基础order，窗口内添加的其它canvas设置的order都以它做偏移
+    self.base_order = 0
 end
 
 -- 创建：资源加载完毕
 local function OnCreate(self)
-	base.OnCreate(self)
-	-- 窗口画布
-	self.canvas = self:AddComponent(UICanvas, "", 0)
-	-- 回调管理，使其最长保持和View等同的生命周期
-	self.__ui_callback = {}
-	-- 初始化RectTransform
-	self.rectTransform.offsetMax = Vector2.zero
-	self.rectTransform.offsetMin = Vector2.zero
-	self.rectTransform.localScale = Vector3.one
-	self.rectTransform.localPosition = Vector3.zero
+    base.OnCreate(self)
+    -- 窗口画布
+    self.canvas = self:AddComponent(UICanvas, "", 0)
+    -- 回调管理，使其最长保持和View等同的生命周期
+    self.__ui_callback = {}
+    -- 初始化RectTransform
+    self.rectTransform.offsetMax = Vector2.zero
+    self.rectTransform.offsetMin = Vector2.zero
+    self.rectTransform.localScale = Vector3.one
+    self.rectTransform.localPosition = Vector3.zero
 end
 
 -- 打开：窗口显示
 local function OnEnable(self)
-	self.base_order = self.holder:PopWindowOder()
-	base.OnEnable(self)
-	self:OnAddListener()
+    self.base_order = self.holder:PopWindowOder()
+    base.OnEnable(self)
+    self:OnAddListener()
 end
 
 -- 注册消息
@@ -66,49 +70,49 @@ local function OnRemoveListener(self)
 end
 
 local function AddCallback(keeper, msg_name, callback)
-	assert(callback ~= nil)
-	keeper[msg_name] = callback
+    assert(callback ~= nil)
+    keeper[msg_name] = callback
 end
 
 local function GetCallback(keeper, msg_name)
-	return keeper[msg_name]
+    return keeper[msg_name]
 end
 
 local function RemoveCallback(keeper, msg_name, callback)
-	assert(callback ~= nil)
-	keeper[msg_name] = nil
+    assert(callback ~= nil)
+    keeper[msg_name] = nil
 end
 
 -- 注册UI数据监听事件，别重写
 local function AddUIListener(self, msg_name, callback)
-	local bindFunc = Bind(self, callback)
-	AddCallback(self.__ui_callback, msg_name, bindFunc)
-	UIManager:GetInstance():AddListener(msg_name, bindFunc)
+    local bindFunc = Bind(self, callback)
+    AddCallback(self.__ui_callback, msg_name, bindFunc)
+    UIManager:GetInstance():AddListener(msg_name, bindFunc)
 end
 
 -- 注销UI数据监听事件，别重写
 local function RemoveUIListener(self, msg_name, callback)
-	local bindFunc = GetCallback(self.__ui_callback, msg_name)
-	RemoveCallback(self.__ui_callback, msg_name, bindFunc)
-	UIManager:GetInstance():RemoveListener(msg_name, bindFunc)
+    local bindFunc = GetCallback(self.__ui_callback, msg_name)
+    RemoveCallback(self.__ui_callback, msg_name, bindFunc)
+    UIManager:GetInstance():RemoveListener(msg_name, bindFunc)
 end
 
 -- 关闭：窗口隐藏
 local function OnDisable(self)
-	self:OnRemoveListener()
-	base.OnDisable(self)
-	self.holder:PushWindowOrder()
+    self:OnRemoveListener()
+    base.OnDisable(self)
+    self.holder:PushWindowOrder()
 end
 
 -- 销毁：窗口销毁
 local function OnDestroy(self)
-	for k,v in pairs(self.__ui_callback) do
-		self:RemoveUIListener(k, v)
-	end
-	self.model = nil
-	self.ctrl = nil
-	self.__ui_callback = nil
-	base.OnDestroy(self)
+    for k, v in pairs(self.__ui_callback) do
+        self:RemoveUIListener(k, v)
+    end
+    self.model = nil
+    self.ctrl = nil
+    self.__ui_callback = nil
+    base.OnDestroy(self)
 end
 
 UIBaseView.__init = __init

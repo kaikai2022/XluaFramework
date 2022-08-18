@@ -3,6 +3,7 @@
 --- Created by lucus.
 --- DateTime: 14/7/2022 4:06 PM
 ---
+local Idiom_DataMessageNames = require("UI.UIGuessTheIdiom.Idiom_DataMessageNames")
 
 ---游戏中所有的成语
 local IdiomConfig = {
@@ -3117,15 +3118,18 @@ IdiomConfig.Count = #IdiomConfig
 IdiomConfig.texts = ta
 local PlayerPrefsLeveKey = "PlayerPrefsIdiomLeveKey"
 
----@public getNowLeve 获取当前本地化的等级
-IdiomConfig.getNowLeve = function()
+---@public getPlayerPrefsLeve 获取当前本地化的等级
+IdiomConfig.getPlayerPrefsLeve = function()
     return CS.UnityEngine.PlayerPrefs.GetInt(PlayerPrefsLeveKey, 1)
 end
 
 ---@public setNowLeve 设置本地化存储等级
 IdiomConfig.setNowLeve = function(value)
-    assert(value > 1 and value <= IdiomConfig.Count, "设置等级时出错")
-    CS.UnityEngine.PlayerPrefs.SetInt(PlayerPrefsLeveKey, value)
+    assert(value > 1 and value <= IdiomConfig.Count, string.format("设置等级时出错%s", value))
+    if IdiomConfig.getPlayerPrefsLeve() < value then
+        CS.UnityEngine.PlayerPrefs.SetInt(PlayerPrefsLeveKey, value)
+    end
+    DataManager:GetInstance():Broadcast(Idiom_DataMessageNames.ON_GAME_START, value)
 end
 
 ---@class IdiomConfig 猜谜语的一般配置

@@ -33,7 +33,7 @@ end
 
 ---@public IsLock 当前状态
 function ItemBtnLeave:IsLock()
-    if self.leave == -1 or self.leave > IdiomConfig.getNowLeve() then
+    if self.leave == -1 or self.leave > IdiomConfig.getPlayerPrefsLeve() then
         self.lock:SetActive(true)
         self.text:SetActive(false)
         self.button.interactable = false

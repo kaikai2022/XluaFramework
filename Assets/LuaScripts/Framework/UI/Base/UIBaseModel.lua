@@ -9,30 +9,30 @@
 -- 5、界面Model层不依赖Ctrl层和View层，意思是说拿掉这这两层代码，Model依旧能完好运行
 -- 6、界面Model层数据只影响UI，不影响游戏逻辑，游戏逻辑不能从Model层取数据，意思是没有界面，游戏依旧能跑
 --]]
-
+---@class UIBaseModel UIBaseModel
 local UIBaseModel = BaseClass("UIBaseModel")
 
 -- 如非必要，别重写构造函数，使用OnCreate初始化
 local function __init(self, ui_name)
-	-- 回调管理，使其最长保持和Model等同的生命周期
-	self.__ui_callback = {}
-	self.__data_callback = {}
-	self.__ui_name = ui_name
-	self:OnCreate()
+    -- 回调管理，使其最长保持和Model等同的生命周期
+    self.__ui_callback = {}
+    self.__data_callback = {}
+    self.__ui_name = ui_name
+    self:OnCreate()
 end
 
 -- 如非必要，别重写析构函数，使用OnDestroy销毁资源
 local function __delete(self)
-	self:OnDestroy()
-	for k,v in pairs(self.__ui_callback) do
-		self:RemoveUIListener(k, v)
-	end
-	for k,v in pairs(self.__data_callback) do
-		self:RemoveDataListener(k, v)
-	end
-	self.__ui_callback = nil
-	self.__data_callback = nil
-	self.__ui_name = nil
+    self:OnDestroy()
+    for k, v in pairs(self.__ui_callback) do
+        self:RemoveUIListener(k, v)
+    end
+    for k, v in pairs(self.__data_callback) do
+        self:RemoveDataListener(k, v)
+    end
+    self.__ui_callback = nil
+    self.__data_callback = nil
+    self.__ui_name = nil
 end
 
 -- 创建：变量定义，初始化，消息注册
@@ -65,61 +65,61 @@ end
 
 -- 激活：给UIManager用，别重写
 local function Activate(self, ...)
-	self:OnAddListener()
-	self:OnEnable(...)
+    self:OnAddListener()
+    self:OnEnable(...)
 end
 
 -- 反激活：给UIManager用，别重写
 local function Deactivate(self)
-	self:OnRemoveListener()
-	self:OnDisable()
+    self:OnRemoveListener()
+    self:OnDisable()
 end
 
 local function AddCallback(keeper, msg_name, callback)
-	assert(callback ~= nil)
-	keeper[msg_name] = callback
+    assert(callback ~= nil)
+    keeper[msg_name] = callback
 end
 
 local function GetCallback(keeper, msg_name)
-	return keeper[msg_name]
+    return keeper[msg_name]
 end
 
 local function RemoveCallback(keeper, msg_name, callback)
-	assert(callback ~= nil)
-	keeper[msg_name] = nil
+    assert(callback ~= nil)
+    keeper[msg_name] = nil
 end
 
 -- 注册UI数据监听事件，别重写
 local function AddUIListener(self, msg_name, callback)
-	local bindFunc = Bind(self, callback)
-	AddCallback(self.__ui_callback, msg_name, bindFunc)
-	UIManager:GetInstance():AddListener(msg_name, bindFunc)
+    local bindFunc = Bind(self, callback)
+    AddCallback(self.__ui_callback, msg_name, bindFunc)
+    UIManager:GetInstance():AddListener(msg_name, bindFunc)
 end
 
 -- 发送UI数据变动事件，别重写
 local function UIBroadcast(self, msg_name, ...)
-	UIManager:GetInstance():Broadcast(msg_name, ...)
+    UIManager:GetInstance():Broadcast(msg_name, ...)
 end
 
 -- 注销UI数据监听事件，别重写
 local function RemoveUIListener(self, msg_name, callback)
-	local bindFunc = GetCallback(self.__ui_callback, msg_name)
-	RemoveCallback(self.__ui_callback, msg_name, bindFunc)
-	UIManager:GetInstance():RemoveListener(msg_name, bindFunc)
+    local bindFunc = GetCallback(self.__ui_callback, msg_name)
+    RemoveCallback(self.__ui_callback, msg_name, bindFunc)
+    UIManager:GetInstance():RemoveListener(msg_name, bindFunc)
 end
 
 -- 注册游戏数据监听事件，别重写
 local function AddDataListener(self, msg_name, callback)
-	local bindFunc = Bind(self, callback)
-	AddCallback(self.__data_callback, msg_name, bindFunc)
-	DataManager:GetInstance():AddListener(msg_name, bindFunc)
+    local bindFunc = Bind(self, callback)
+    AddCallback(self.__data_callback, msg_name, bindFunc)
+    DataManager:GetInstance():AddListener(msg_name, bindFunc)
 end
 
 -- 注销游戏数据监听事件，别重写
 local function RemoveDataListener(self, msg_name, callback)
-	local bindFunc = GetCallback(self.__data_callback, msg_name)
-	RemoveCallback(self.__data_callback, msg_name, bindFunc)
-	DataManager:GetInstance():RemoveListener(msg_name, bindFunc)
+    local bindFunc = GetCallback(self.__data_callback, msg_name)
+    RemoveCallback(self.__data_callback, msg_name, bindFunc)
+    DataManager:GetInstance():RemoveListener(msg_name, bindFunc)
 end
 
 UIBaseModel.__init = __init
