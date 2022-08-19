@@ -9,14 +9,21 @@ local base = BaseScene
 
 function GuessTheIdiomStartScene:OnCreate()
     base.OnCreate(self)
+    Logger.Log("OnCreate")
     self:AddPreloadResource(UIConfig[UIWindowNames.UIGuessTheIdiomStart].PrefabPath, typeof(CS.UnityEngine.GameObject), 1)
     self:AddPreloadResource(UIConfig[UIWindowNames.UIGuessTheIdiomLevel].PrefabPath, typeof(CS.UnityEngine.GameObject), 1)
+    self:AddPreloadResource("MinniGames/GuessTheIdiom/MasterAudio.prefab", typeof(CS.UnityEngine.GameObject), 1)
 end
 
 -- 准备工作
 function GuessTheIdiomStartScene:OnComplete(self)
     base.OnComplete(self)
     UIManager:GetInstance():OpenWindow(UIWindowNames.UIGuessTheIdiomStart)
+end
+
+function GuessTheIdiomStartScene:OnEnter()
+    base.OnEnter(self)
+    Logger.Log("OnEnter")
 end
 
 return GuessTheIdiomStartScene

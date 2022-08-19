@@ -87,7 +87,7 @@
             //TMPro TextMeshPro
             typeof(TMPro.TextMeshProUGUI),
             typeof(TMPro.TextMeshPro),
-            
+
             typeof(ComponentExtensions),
 
             // easy touch
@@ -175,6 +175,9 @@
             typeof(SuperScrollView.LoopStaggeredGridViewItem),
             typeof(SuperScrollView.StaggeredGridItemGroup),
             typeof(SuperScrollView.StaggeredGridItemPool),
+
+            //Master_Audio_2022_AAA_Sound
+            typeof(DarkTonic.MasterAudio.MasterAudio),
         };
 
     //C#静态调用Lua的配置（包括事件的原型），仅可以配delegate，interface
@@ -192,7 +195,7 @@
             typeof(UnityEngine.Events.UnityAction<UnityEngine.Vector2>),
 
             typeof(UI.GridPageView.UpdateGridItem),
-            
+
             // SuperScrollView 
             typeof(System.Func<SuperScrollView.LoopListView2, int, SuperScrollView.LoopListViewItem2>),
             typeof(System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>),
