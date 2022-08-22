@@ -24,8 +24,26 @@ function UIGamingInputPanel:OnCreate(model, inputCallback, removeCallback)
         end
     end)
     self.content = self.transform:Find("content")
-    local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
+    --local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
     self.textBtnList = {}
+    --for index = 1, buttonCount do
+    --    local btn_text = GameObject.Instantiate(btn_text_prefab, self.content)
+    --    local text = btn_text.transform:Find("text"):GetComponent("Text")
+    --
+    --    btn_text:GetComponent("Button").onClick:AddListener(function()
+    --        if inputCallback then
+    --            inputCallback(text.text)
+    --        end
+    --    end)
+    --    table.insert(self.textBtnList, text)
+    --end
+    --self.gameObject:SetActive(false)
+end
+
+function UIGamingInputPanel:OnEnable()
+    base.OnEnable(self)
+    local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
+    --self.textBtnList = {}
     for index = 1, buttonCount do
         local btn_text = GameObject.Instantiate(btn_text_prefab, self.content)
         local text = btn_text.transform:Find("text"):GetComponent("Text")

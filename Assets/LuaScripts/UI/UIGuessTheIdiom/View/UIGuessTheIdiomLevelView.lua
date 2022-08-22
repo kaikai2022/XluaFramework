@@ -32,13 +32,17 @@ local function OnCreate(self)
 
     --self.page_content = self.transform:Find(page_content)
 
-    ResourcesManager:GetInstance():LoadAsync(
-            "MinniGames/GuessTheIdiom/LevelSelectionPrefab/btn_leva.prefab",
-            typeof(GameObject),
-            function(asset)
-                self.btn_leva_gameObject = asset
-            end)
+    --ResourcesManager:GetInstance():LoadAsync(
+    --        "MinniGames/GuessTheIdiom/LevelSelectionPrefab/btn_leva.prefab",
+    --        typeof(GameObject),
+    --        function(asset)
+    --            self.btn_leva_gameObject = asset
+    --        end)
 
+    GameObjectPool:GetInstance():GetGameObjectAsync("MinniGames/GuessTheIdiom/LevelSelectionPrefab/btn_leva.prefab", function(asset)
+        self.btn_leva_gameObject = asset
+        self.btn_leva_gameObject:SetActive(false)
+    end)
     --self.pageView = self:AddComponent(UIPageView, page_content,
     --        math.ceil(100 / (3 * 8)),
     --        Bind(self, self.OnGetItemByIndex),
@@ -130,7 +134,7 @@ end
 
 function UIGuessTheIdiomLevelView:OnClickedItem(item)
     Logger.Log(item.leave)
-    UIManager:GetInstance():OpenWindow(UIWindowNames.UIGuessTheIdiomGaming, item.leave + 1)
+    self.ctrl:EnterGaming(item.leave)
 end
 
 function UIGuessTheIdiomLevelView:UpdateAllDots()

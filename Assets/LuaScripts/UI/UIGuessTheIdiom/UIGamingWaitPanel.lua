@@ -11,9 +11,36 @@ function UIGamingWaitPanel:OnCreate(model)
     base.OnCreate(self)
     assert(model, 'model是空')
     self.model = model
-    local imageTs = self.transform:Find("Image")
-    local wait_input_item_box_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(GameObject), nil)
     self.texts = {}
+
+    --local imageTs = self.transform:Find("Image")
+    --local wait_input_item_box_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(GameObject), nil)
+    --self.texts = {}
+    --for index = 1, 4 do
+    --    local wait_input_item_box = GameObject.Instantiate(wait_input_item_box_prefab, imageTs)
+    --    local text = wait_input_item_box.transform:Find("Text"):GetComponent("Text")
+    --    table.insert(self.texts, text)
+    --end
+    --self:UpdateText()
+
+end
+
+function UIGamingWaitPanel:OnEnable()
+    base.OnEnable(self)
+    local imageTs = self.transform:Find("Image")
+
+    --GameObjectPool:GetInstance():GetGameObjectAsync("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", function(wait_input_item_box_prefab)
+    --    self.texts = {}
+    --    for index = 1, 4 do
+    --        local wait_input_item_box = GameObject.Instantiate(wait_input_item_box_prefab, imageTs)
+    --        local text = wait_input_item_box.transform:Find("Text"):GetComponent("Text")
+    --        table.insert(self.texts, text)
+    --    end
+    --    self:UpdateText()
+    --    wait_input_item_box_prefab:SetActive(false)
+    --end)
+
+    local wait_input_item_box_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(GameObject), nil)
     for index = 1, 4 do
         local wait_input_item_box = GameObject.Instantiate(wait_input_item_box_prefab, imageTs)
         local text = wait_input_item_box.transform:Find("Text"):GetComponent("Text")
@@ -21,6 +48,7 @@ function UIGamingWaitPanel:OnCreate(model)
     end
     self:UpdateText()
 end
+
 ---@public UpdateText 刷新文字显示
 function UIGamingWaitPanel:UpdateText()
     for index, text in ipairs(self.texts) do

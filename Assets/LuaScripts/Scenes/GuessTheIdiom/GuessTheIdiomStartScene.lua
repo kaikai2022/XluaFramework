@@ -12,18 +12,30 @@ function GuessTheIdiomStartScene:OnCreate()
     Logger.Log("OnCreate")
     self:AddPreloadResource(UIConfig[UIWindowNames.UIGuessTheIdiomStart].PrefabPath, typeof(CS.UnityEngine.GameObject), 1)
     self:AddPreloadResource(UIConfig[UIWindowNames.UIGuessTheIdiomLevel].PrefabPath, typeof(CS.UnityEngine.GameObject), 1)
+    self:AddPreloadResource(UIConfig[UIWindowNames.UIGuessTheIdiomGaming].PrefabPath, typeof(CS.UnityEngine.GameObject), 1)
     self:AddPreloadResource("MinniGames/GuessTheIdiom/MasterAudio.prefab", typeof(CS.UnityEngine.GameObject), 1)
+    self:AddPreloadResource("MinniGames/GuessTheIdiom/LevelSelectionPrefab/btn_leva.prefab", typeof(CS.UnityEngine.GameObject), 1)
+    self:AddPreloadResource("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(CS.UnityEngine.GameObject), 1)
+    
 end
 
 -- 准备工作
 function GuessTheIdiomStartScene:OnComplete(self)
     base.OnComplete(self)
+    Logger.Log("OnComplete")
     UIManager:GetInstance():OpenWindow(UIWindowNames.UIGuessTheIdiomStart)
+    --local masterAudioObj = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/MasterAudio.prefab", typeof(CS.UnityEngine.GameObject))
+    --GameObject.Instantiate(masterAudioObj)
+    --local masterAudio = masterAudioObj.GetCom
+    GameObjectPool:GetInstance():CoGetGameObjectAsync("MinniGames/GuessTheIdiom/MasterAudio.prefab")
+    CS.DarkTonic.MasterAudio.MasterAudio.PlaySound("bg")
 end
 
 function GuessTheIdiomStartScene:OnEnter()
     base.OnEnter(self)
     Logger.Log("OnEnter")
+
+    --GameObjectPool:GetInstance():
 end
 
 return GuessTheIdiomStartScene
