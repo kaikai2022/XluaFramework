@@ -19,6 +19,7 @@ local base = UIBaseModel-- 创建
 local function OnCreate(self)
     base.OnCreate(self)
     -- 窗口生命周期内保持的成员变量放这
+    self.nowInputStrs = {}
 end
 -- 打开
 local function OnEnable(self, leve)

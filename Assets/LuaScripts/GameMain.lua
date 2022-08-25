@@ -30,9 +30,10 @@ local function EnterGame()
     --package.cpath = package.cpath .. ';/Users/lucus/Library/Application Support/JetBrains/Rider2021.1/plugins/EmmyLua/debugger/emmy/mac/?.dylib'
     --local dbg = require('emmy_core')
     --dbg.tcpConnect('localhost', 9966)
-    
-    SceneManager:GetInstance():SwitchScene(SceneConfig.GuessTheIdiomStartScene)
-
+    coroutine.start(function()
+        SceneManager:GetInstance():Startup()
+        SceneManager:GetInstance():SwitchScene(SceneConfig.GuessTheIdiomStartScene)
+    end)
 end
 
 

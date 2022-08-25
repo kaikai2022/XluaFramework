@@ -7,7 +7,7 @@
 --]]
 
 local SceneManager = BaseClass("SceneManager", Singleton)
-
+local base = Singleton
 -- 构造函数
 local function __init(self)
     -- 成员变量
@@ -56,7 +56,9 @@ local function CoInnerSwitchScene(self, scene_config)
     -- 同步加载loading场景
     local scene_mgr = CS.UnityEngine.SceneManagement.SceneManager
     local resources = CS.UnityEngine.Resources
-    scene_mgr.LoadScene(SceneConfig.LoadingScene.Level)
+    ---打开loadingScene Start
+    scene_mgr.LoadScene(SceneConfig.LoadingScene.Name)
+    ---打开loadingScene End
     model.value = model.value + 0.01
     coroutine.waitforframes(1)
     -- GC：交替重复2次，清干净一点
@@ -154,10 +156,28 @@ local function __delete(self)
     for _, scene in pairs(self.scenes) do
         scene:Delete()
     end
+    if SceneConfig.LoadingScene.SceneABPath then
+        ---LoadingScene 场景没有asset 所以没有引用 设置常驻包(取消)
+        ResourcesManager:GetInstance():SetAssetBundleResident(scene_config.SceneABPath, false)
+    end
 end
 
 SceneManager.__init = __init
 SceneManager.SwitchScene = SwitchScene
 SceneManager.__delete = __delete
+
+function SceneManager:Startup()
+    base.Startup(self)
+    if SceneConfig.LoadingScene.SceneABPath then
+        ---LoadingScene 场景没有asset 所以没有引用 设置常驻包
+        ResourcesManager:GetInstance():SetAssetBundleResident(SceneConfig.LoadingScene.SceneABPath, true)
+        local loader = ResourcesManager:GetInstance():CoLoadAssetBundleAsync(SceneConfig.LoadingScene.SceneABPath, function(co, progress)
+            --assert(progress <= 1.0, "What's the funck!!!")
+            --model.value = cur_progress + 0.2 * progress
+        end)
+        --coroutine.waitforframes(1)
+    end
+    Logger.Log("SceneManager:Startup()")
+end 
 
 return SceneManager;

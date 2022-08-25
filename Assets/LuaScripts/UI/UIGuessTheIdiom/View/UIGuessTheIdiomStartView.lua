@@ -15,6 +15,9 @@ local function OnCreate(self)
     -- 窗口生命周期内保持的成员变量放这
     self.btn_start = self:AddComponent(UIButton, btn_start_path)
     self.btn_start:SetOnClick(Bind(self.ctrl, self.ctrl.OnEnterLeave))
+
+    self:AddComponent(require("UI.UIGuessTheIdiom.Idiom_UI_SoundToggle"), "toggle_sound")
+    self:AddComponent(require("UI.UIGuessTheIdiom.IdiomUIBtnOnClick"), btn_start_path)
 end
 -- 打开
 local function OnEnable(self)
@@ -30,6 +33,10 @@ end
 UIGuessTheIdiomStartView.OnCreate = OnCreate
 UIGuessTheIdiomStartView.OnEnable = OnEnable
 UIGuessTheIdiomStartView.OnDestroy = OnDestroy
+
+--function UIGuessTheIdiomStartView:()
+--    
+--end
 
 return UIGuessTheIdiomStartView
 

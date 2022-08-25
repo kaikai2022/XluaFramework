@@ -71,15 +71,16 @@ public class AssetbundleUpdater : MonoBehaviour
     {
         // 初始化本地版本信息
         InitLocalVersion();
-#if UNITY_WEBGL
+#if PLATFORM_WEBGL || UNITY_WEBGL
         yield return UpdateFinish(false);
+        yield break;
 #endif
 
 #if UNITY_EDITOR
         if (AssetBundleConfig.IsEditorMode)
         {
-            // yield break;
             yield return UpdateFinish(false);
+            // yield break;
         }
 #endif
 

@@ -6,6 +6,9 @@
 
 local UIGamingOverPanel = BaseClass("UIGamingOverPanel", UIBaseComponent)
 local base = UIBaseComponent
+
+local IdiomUIBtnOnClick = require("UI.UIGuessTheIdiom.IdiomUIBtnOnClick")
+
 ---@param model UIGuessTheIdiomGamingModel model
 function UIGamingOverPanel:OnCreate(model, nextCallback)
     base.OnCreate(self)
@@ -13,8 +16,11 @@ function UIGamingOverPanel:OnCreate(model, nextCallback)
     ---@field model UIGuessTheIdiomGamingModel 游戏的model
     self.model = model
     self.btn_next = self.transform:Find("btn_next_idiom"):GetComponent("Button")
+    self.idiomUIBtnOnClick = IdiomUIBtnOnClick.New(self, self.btn_next.gameObject)
+    self.idiomUIBtnOnClick:OnCreate()
     if nextCallback then
-        self.btn_next.onClick:AddListener(nextCallback)
+        self.nextCallback = nextCallback
+        self.btn_next.onClick:AddListener(self.nextCallback)
     end
     self.wrong_panel_go = self.transform:Find("wrong_panel").gameObject
     self.correct_panel_go = self.transform:Find("correct_panel").gameObject
@@ -31,7 +37,11 @@ end
 
 function UIGamingOverPanel:SetNextCallback(nextCallback)
     if nextCallback then
-        self.btn_next.onClick:AddListener(nextCallback)
+        if self.nextCallback then
+            self.btn_next.onClick:RemoveListener(self.nextCallback)
+        end
+        self.nextCallback = nextCallback
+        self.btn_next.onClick:AddListener(self.nextCallback)
     end
 end
 
@@ -62,6 +72,12 @@ end
 
 function UIGamingOverPanel:InitState()
     self:SetActive(false)
+end
+
+function UIGamingOverPanel:OnDestroy()
+    base.OnDestroy(self)
+    self.btn_next.onClick:RemoveListener(self.nextCallback)
+
 end
 
 return UIGamingOverPanel

@@ -6,6 +6,7 @@
 
 local UIGamingInputPanel = BaseClass("UIGamingInputPanel", UIBaseComponent)
 local base = UIBaseComponent
+local IdiomUIBtnOnClick = require("UI.UIGuessTheIdiom.IdiomUIBtnOnClick")
 
 ---界面中文字按钮的个数
 local buttonCount = 16
@@ -18,51 +19,53 @@ function UIGamingInputPanel:OnCreate(model, inputCallback, removeCallback)
 
     self.btn_remove = self.transform:Find("btn_remove"):GetComponent("Button")
     self.btn_remove.transform.position = self.stateImagPosTs.position
+    IdiomUIBtnOnClick.New(self, self.btn_remove.gameObject):OnCreate()
     self.btn_remove.onClick:AddListener(function()
         if removeCallback then
             removeCallback()
         end
     end)
     self.content = self.transform:Find("content")
-    --local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
     self.textBtnList = {}
-    --for index = 1, buttonCount do
-    --    local btn_text = GameObject.Instantiate(btn_text_prefab, self.content)
-    --    local text = btn_text.transform:Find("text"):GetComponent("Text")
-    --
-    --    btn_text:GetComponent("Button").onClick:AddListener(function()
-    --        if inputCallback then
-    --            inputCallback(text.text)
-    --        end
-    --    end)
-    --    table.insert(self.textBtnList, text)
-    --end
-    --self.gameObject:SetActive(false)
+
+    self.inputCallback = inputCallback
 end
 
 function UIGamingInputPanel:OnEnable()
     base.OnEnable(self)
-    local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
+    --local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
+    local btn_text_prefab = GameObjectPool:GetInstance():CoGetGameObjectAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject))
     --self.textBtnList = {}
     for index = 1, buttonCount do
         local btn_text = GameObject.Instantiate(btn_text_prefab, self.content)
-        local text = btn_text.transform:Find("text"):GetComponent("Text")
-
-        btn_text:GetComponent("Button").onClick:AddListener(function()
-            if inputCallback then
-                inputCallback(text.text)
+        IdiomUIBtnOnClick.New(self, btn_text.gameObject):OnCreate()
+        local text = UIText.New(self, btn_text.transform:Find("text").gameObject)
+        text:OnCreate()
+        --local text = btn_text.transform:Find("text"):GetComponent("Text")
+        text.onClickCallback = function()
+            if self.inputCallback then
+                self.inputCallback(text:GetText())
             end
-        end)
+        end
+        btn_text:GetComponent("Button").onClick:AddListener(text.onClickCallback)
         table.insert(self.textBtnList, text)
     end
+    btn_text_prefab.gameObject:SetActive(false)
     self.gameObject:SetActive(false)
+end
+
+function UIGamingInputPanel:OnDisable()
+    base.OnDisable(self)
+    for k, text in ipairs(self.textBtnList) do
+        text.transform.parent:GetComponent("Button").onClick:RemoveListener(text.onClickCallback)
+    end
 end
 
 ---@public InitData 每局游戏初始化游戏数据
 function UIGamingInputPanel:InitData()
     local texts = self.model.texts
     for index, btn_text in ipairs(self.textBtnList) do
-        btn_text.text = texts[index] or ""
+        btn_text:SetText(texts[index] or "")
     end
     self.gameObject:SetActive(true)
     self.btn_remove.gameObject:SetActive(true)

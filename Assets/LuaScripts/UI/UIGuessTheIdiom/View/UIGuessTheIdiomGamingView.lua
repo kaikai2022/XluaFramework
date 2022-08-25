@@ -12,16 +12,15 @@ local base = UIBaseView
 
 ---@private Idiom_UIMessageNames Idiom_UIMessageNames  猜谜语的UI通知
 local Idiom_UIMessageNames = require("UI.UIGuessTheIdiom.Idiom_UIMessageNames")
-
 local img_idiom_path = "IdiomBg/idiom"
 
 local function OnCreate(self)
     base.OnCreate(self)
     -- 窗口生命周期内保持的成员变量放这
-    self.img_idiom = self:AddComponent(UIImage_Atlas, img_idiom_path, 'MinniGames/GuessTheIdiom/AllIdionms.spriteatlas', "1")
+    self.img_idiom = self:AddComponent(UIImage_Atlas, img_idiom_path, 'MinniGames/GuessTheIdiom/AllIdionms/AllIdionms.spriteatlas', "1")
     self:initGameOverPanel()
     self:initGameInputPanel()
-
+    self:AddComponent(require("UI.UIGuessTheIdiom.Idiom_UI_SoundToggle"), "toggle_sound")
 end
 -- 打开
 local function OnEnable(self)
@@ -83,6 +82,8 @@ function UIGuessTheIdiomGamingView:OnAddListener()
     self:AddUIListener(Idiom_UIMessageNames.ON_GAME_OVER, self.OverGame)
     self:AddUIListener(Idiom_UIMessageNames.ON_GAME_START, self.StartGame)
 
+    self:AddUIListener(Idiom_UIMessageNames.ON_SOUND_STATE, self.SoundState)
+
 end
 
 function UIGuessTheIdiomGamingView:OnRemoveListener()
@@ -103,6 +104,10 @@ end
 ---@public RemoveText 删除一个文字
 function UIGuessTheIdiomGamingView:RemoveText()
     self.waitInput:RemoveText()
+end
+
+function UIGuessTheIdiomGamingView:SoundState(isOn)
+
 end
 
 UIGuessTheIdiomGamingView.OnCreate = OnCreate

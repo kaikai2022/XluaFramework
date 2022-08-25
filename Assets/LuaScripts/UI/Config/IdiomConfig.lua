@@ -3120,7 +3120,7 @@ local PlayerPrefsLeveKey = "PlayerPrefsIdiomLeveKey"
 
 ---@public getPlayerPrefsLeve 获取当前本地化的等级
 IdiomConfig.getPlayerPrefsLeve = function()
-    return CS.UnityEngine.PlayerPrefs.GetInt(PlayerPrefsLeveKey, 0)
+    return CS.UnityEngine.PlayerPrefs.GetInt(PlayerPrefsLeveKey, 1)
 end
 
 ---@public setNowLeve 设置本地化存储等级

@@ -16,7 +16,8 @@ local SceneConfig = {
     },
     -- 加载场景
     LoadingScene = {
-        Level = 1,
+        --Level = 1,
+        SceneABPath = "CommonScenes/LoadingScene.unity",
         Name = "LoadingScene",
         Type = nil,
     },

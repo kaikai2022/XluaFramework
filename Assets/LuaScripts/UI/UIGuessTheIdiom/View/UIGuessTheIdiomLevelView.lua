@@ -23,9 +23,11 @@ local function OnCreate(self)
     -- 窗口生命周期内保持的成员变量放这
     self.btn_left = self:AddComponent(UIButton, btn_left)
     self.btn_left:SetOnClick(Bind(self, self._PreviousPage))
+    self:AddComponent(require("UI.UIGuessTheIdiom.IdiomUIBtnOnClick"), btn_left)
 
     self.btn_right = self:AddComponent(UIButton, btn_right)
     self.btn_right:SetOnClick(Bind(self, self._NextPage))
+    self:AddComponent(require("UI.UIGuessTheIdiom.IdiomUIBtnOnClick"), btn_right)
 
     self.text_page = self:AddComponent(UIText, TMPro_page)
     --self.pageView = UIUtil.FindComponent(self.transform, typeof(CS.UI.GridPageView), page_content)
@@ -42,6 +44,7 @@ local function OnCreate(self)
     GameObjectPool:GetInstance():GetGameObjectAsync("MinniGames/GuessTheIdiom/LevelSelectionPrefab/btn_leva.prefab", function(asset)
         self.btn_leva_gameObject = asset
         self.btn_leva_gameObject:SetActive(false)
+        
     end)
     --self.pageView = self:AddComponent(UIPageView, page_content,
     --        math.ceil(100 / (3 * 8)),
@@ -55,6 +58,8 @@ local function OnCreate(self)
             Bind(self, self.OnGetItemByIndex),
             Bind(self, self.OnSnapNearestChanged)
     )
+    self:AddComponent(require("UI.UIGuessTheIdiom.Idiom_UI_SoundToggle"), "toggle_sound")
+
 end
 
 
@@ -119,6 +124,7 @@ function UIGuessTheIdiomLevelView:OnGetItemByIndex(listView, pageIndex)
             itemBtnLeave:SetLeave(tag)
             itemBtnLeave:IsLock()
             userObjectData[index] = itemBtnLeave
+            
         end
         item.UserObjectData = userObjectData
     else

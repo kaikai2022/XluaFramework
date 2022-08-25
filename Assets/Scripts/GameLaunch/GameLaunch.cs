@@ -4,6 +4,7 @@ using AssetBundles;
 using GameChannel;
 using System;
 using UnityEngine.Android;
+using UnityEngine.UI;
 using XLua;
 
 [Hotfix]
@@ -238,5 +239,11 @@ public class GameLaunch : MonoBehaviour
         XLuaManager.Instance.StartHotfix();
         XLuaManager.Instance.StartToLuaSprite();
         CustomDataStruct.Helper.Startup();
+        
+        // DarkTonic.MasterAudio.MasterAudio.MuteEverything();
+        // transform.GetComponent<Toggle>().OnPointerClick();
     }
+    
+    void test(bool ison){}
+    
 }

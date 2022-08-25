@@ -16,5 +16,10 @@ Idiom_UIMessageNames.ON_GAME_OVER = "OnGameOver" ---完输点击文字输入
 ---@alias ON_GAME_START string 游戏开始通知
 Idiom_UIMessageNames.ON_GAME_START = "OnGameStart"
 
+---@alias ON_ON_SOUND string 声音
+Idiom_UIMessageNames.ON_SOUND_STATE = "OnSoundState" -- 声音
+---@alias ON_OFF_SOUND string 关闭声音
+--Idiom_UIMessageNames.ON_OFF_SOUND = "OnOffSound" -- 关闭声音
+
 ---@class Idiom_UIMessageNames 猜谜语的UI通知
 return ConstClass("Idiom_UIMessageNames", Idiom_UIMessageNames)

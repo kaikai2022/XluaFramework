@@ -16,7 +16,7 @@ function GuessTheIdiomStartScene:OnCreate()
     self:AddPreloadResource("MinniGames/GuessTheIdiom/MasterAudio.prefab", typeof(CS.UnityEngine.GameObject), 1)
     self:AddPreloadResource("MinniGames/GuessTheIdiom/LevelSelectionPrefab/btn_leva.prefab", typeof(CS.UnityEngine.GameObject), 1)
     self:AddPreloadResource("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(CS.UnityEngine.GameObject), 1)
-    
+    self:AddPreloadResource("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(CS.UnityEngine.GameObject), 1)
 end
 
 -- 准备工作
@@ -36,6 +36,11 @@ function GuessTheIdiomStartScene:OnEnter()
     Logger.Log("OnEnter")
 
     --GameObjectPool:GetInstance():
+end
+
+function GuessTheIdiomStartScene:OnLeave()
+    base.OnLeave()
+    GameObjectPool:GetInstance():Cleanup(true)
 end
 
 return GuessTheIdiomStartScene

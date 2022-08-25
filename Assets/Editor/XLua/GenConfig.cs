@@ -178,6 +178,7 @@
 
             //Master_Audio_2022_AAA_Sound
             typeof(DarkTonic.MasterAudio.MasterAudio),
+            typeof(DarkTonic.MasterAudio.PersistentAudioSettings),
         };
 
     //C#静态调用Lua的配置（包括事件的原型），仅可以配delegate，interface
@@ -218,51 +219,63 @@
             new System.Collections.Generic.List<string>() {"UnityEngine.WWW", "movie"},
             new System.Collections.Generic.List<string>() {"UnityEngine.UI.Text", "OnRebuildRequested"},
 #if UNITY_WEBGL
-        new System.Collections.Generic.List<string>() {"UnityEngine.WWW", "threadPriority"},
-        new System.Collections.Generic.List<string>() {"UnityEngine.Light", "SetLightDirty"},
-        new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowRadius"},
-        new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowAngle"},
-        new System.Collections.Generic.List<string>() {"System.Activator", "CreateInstance", "System.String", "System.String"},
-        new System.Collections.Generic.List<string>() {"System.Activator", "CreateInstance", "System.ActivationContext"},
-        new System.Collections.Generic.List<string>() {"System.Activator", "CreateInstance", "System.ActivationContext", "System.String[]"},
-        new System.Collections.Generic.List<string>() {"System.Activator", "CreateInstance", "System.String", "System.String", "System.Object[]"},
-        new System.Collections.Generic.List<string>() {"System.Activator", "CreateInstance", "System.AppDomain", "System.String", "System.String"},
-        new System.Collections.Generic.List<string>()
-        {
-            "System.Activator", "CreateInstance", "System.AppDomain", "System.String", "System.String",
-            "System.Boolean",
-            "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
-            "System.Globalization.CultureInfo", "System.Object[]"
-        },
-        new System.Collections.Generic.List<string>()
-        {
-            "System.Activator", "CreateInstance", "System.String", "System.String", "System.Boolean",
-            "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
-            "System.Globalization.CultureInfo", "System.Object[]"
-        },
-        new System.Collections.Generic.List<string>() {"System.Activator", "CreateInstanceFrom", "System.String", "System.String"},
-        new System.Collections.Generic.List<string>()
-            {"System.Activator", "CreateInstanceFrom", "System.String", "System.String", "System.Object[]"},
-        new System.Collections.Generic.List<string>()
-            {"System.Activator", "CreateInstanceFrom", "System.AppDomain", "System.String", "System.String"},
-        new System.Collections.Generic.List<string>()
-        {
-            "System.Activator", "CreateInstanceFrom", "System.AppDomain", "System.String", "System.String",
-            "System.Boolean",
-            "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
-            "System.Globalization.CultureInfo", "System.Object[]"
-        },
-        new System.Collections.Generic.List<string>()
-        {
-            "System.Activator", "CreateInstanceFrom", "System.String", "System.String", "System.Boolean",
-            "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
-            "System.Globalization.CultureInfo", "System.Object[]"
-        },
-        new System.Collections.Generic.List<string>() {"System.Activator", "CreateComInstanceFrom", "System.String", "System.String"},
-        new System.Collections.Generic.List<string>()
-            {"System.Activator", "CreateComInstanceFrom", "System.String", "System.String", "System.Byte[]","System.Configuration.Assemblies.AssemblyHashAlgorithm"},
-        new System.Collections.Generic.List<string>() {"System.Activator", "GetObject", "System.Type", "System.String"},
-        new System.Collections.Generic.List<string>() {"System.Activator", "GetObject", "System.Type", "System.String", "System.Object"},
+            new System.Collections.Generic.List<string>() {"UnityEngine.WWW", "threadPriority"},
+            new System.Collections.Generic.List<string>() {"UnityEngine.Light", "SetLightDirty"},
+            new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowRadius"},
+            new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowAngle"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstance", "System.String", "System.String"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstance", "System.ActivationContext"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstance", "System.ActivationContext", "System.String[]"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstance", "System.String", "System.String", "System.Object[]"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstance", "System.AppDomain", "System.String", "System.String"},
+            new System.Collections.Generic.List<string>()
+            {
+                "System.Activator", "CreateInstance", "System.AppDomain", "System.String", "System.String",
+                "System.Boolean",
+                "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
+                "System.Globalization.CultureInfo", "System.Object[]"
+            },
+            new System.Collections.Generic.List<string>()
+            {
+                "System.Activator", "CreateInstance", "System.String", "System.String", "System.Boolean",
+                "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
+                "System.Globalization.CultureInfo", "System.Object[]"
+            },
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstanceFrom", "System.String", "System.String"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstanceFrom", "System.String", "System.String", "System.Object[]"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateInstanceFrom", "System.AppDomain", "System.String", "System.String"},
+            new System.Collections.Generic.List<string>()
+            {
+                "System.Activator", "CreateInstanceFrom", "System.AppDomain", "System.String", "System.String",
+                "System.Boolean",
+                "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
+                "System.Globalization.CultureInfo", "System.Object[]"
+            },
+            new System.Collections.Generic.List<string>()
+            {
+                "System.Activator", "CreateInstanceFrom", "System.String", "System.String", "System.Boolean",
+                "System.Reflection.BindingFlags", "System.Reflection.Binder", "System.Object[]",
+                "System.Globalization.CultureInfo", "System.Object[]"
+            },
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "CreateComInstanceFrom", "System.String", "System.String"},
+            new System.Collections.Generic.List<string>()
+            {
+                "System.Activator", "CreateComInstanceFrom", "System.String", "System.String", "System.Byte[]",
+                "System.Configuration.Assemblies.AssemblyHashAlgorithm"
+            },
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "GetObject", "System.Type", "System.String"},
+            new System.Collections.Generic.List<string>()
+                {"System.Activator", "GetObject", "System.Type", "System.String", "System.Object"},
 
 
 #endif
@@ -299,6 +312,27 @@
             new System.Collections.Generic.List<string>()
                 {"System.Type", "MakeGenericSignatureType", "System.Type", "System.Type[]"},
             new System.Collections.Generic.List<string>() {"System.Type", "IsCollectible"},
+
+
+            //Master_Audio_2022_AAA_Sound 
+            new System.Collections.Generic.List<string>() {"DarkTonic.MasterAudio.MasterAudio", "MixerWidth"},
+            new System.Collections.Generic.List<string>() {"DarkTonic.MasterAudio.MasterAudio", "BusesShownInNarrow"},
+            new System.Collections.Generic.List<string>()
+                {"DarkTonic.MasterAudio.MasterAudio", "RemoveUnplayedVariationDueToProbability"},
+            new System.Collections.Generic.List<string>() {"DarkTonic.MasterAudio.MasterAudio", "UseDbScaleForVolume"},
+            new System.Collections.Generic.List<string>() {"DarkTonic.MasterAudio.MasterAudio", "UseCentsForPitch"},
+            new System.Collections.Generic.List<string>() {"DarkTonic.MasterAudio.MasterAudio", "HideLogoNav"},
+            new System.Collections.Generic.List<string>()
+                {"DarkTonic.MasterAudio.MasterAudio", "MasterAudioFolderPath"},
+            new System.Collections.Generic.List<string>() {"DarkTonic.MasterAudio.MasterAudio", "GroupTemplateFolder"},
+            new System.Collections.Generic.List<string>()
+                {"DarkTonic.MasterAudio.MasterAudio", "AudioSourceTemplateFolder"},
+            new System.Collections.Generic.List<string>()
+                {"DarkTonic.MasterAudio.MasterAudio", "InRangeOcclusionSources"},
+            new System.Collections.Generic.List<string>()
+                {"DarkTonic.MasterAudio.MasterAudio", "OutOfRangeOcclusionSources"},
+            new System.Collections.Generic.List<string>()
+                {"DarkTonic.MasterAudio.MasterAudio", "BlockedOcclusionSources"},
         };
 
 // #if UNITY_2018_1_OR_NEWER

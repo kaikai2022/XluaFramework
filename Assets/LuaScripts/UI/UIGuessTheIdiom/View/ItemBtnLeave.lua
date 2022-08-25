@@ -7,7 +7,7 @@
 local ItemBtnLeave = BaseClass("ItemBtnLeave", UIBaseContainer)
 local base = UIBaseContainer
 local IdiomConfig = require("UI.Config.IdiomConfig")
-
+local IdiomUIBtnOnClick = require("UI.UIGuessTheIdiom.IdiomUIBtnOnClick")
 function ItemBtnLeave:OnCreate(callback)
     base.OnCreate(self)
     self.leave = -1
@@ -15,10 +15,15 @@ function ItemBtnLeave:OnCreate(callback)
     self.lock = self:AddComponent(UIImage, "lock")
     self.button = self.transform:GetComponent("Button")
     self:IsLock()
+
+    self.idiomUIBtnOnClick = IdiomUIBtnOnClick.New(self, self.gameObject)
+    self.idiomUIBtnOnClick:OnCreate()
+
     if callback then
-        self.button.onClick:AddListener(function(button)
+        self.callback = function(button)
             return callback(self)
-        end)
+        end
+        self.button.onClick:AddListener(self.callback)
     end
 end
 
@@ -42,6 +47,13 @@ function ItemBtnLeave:IsLock()
         self.lock:SetActive(false)
         self.text:SetActive(true)
     end
+end
+
+function ItemBtnLeave:OnDestroy()
+    base.OnDestroy(self)
+    self.idiomUIBtnOnClick:OnDestroy()
+    self.button.onClick:RemoveListener(self.callback)
+
 end
 
 return ItemBtnLeave
