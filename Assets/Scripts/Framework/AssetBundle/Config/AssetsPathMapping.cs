@@ -53,17 +53,9 @@ namespace AssetBundles
             AssetbundleName = AssetBundleUtility.AssetBundlePathToAssetBundleName(AssetName);
         }
 
-        public string AssetbundleName
-        {
-            get;
-            protected set;
-        }
+        public string AssetbundleName { get; protected set; }
 
-        public string AssetName
-        {
-            get;
-            protected set;
-        }
+        public string AssetName { get; protected set; }
 
         public void Initialize(string content)
         {
@@ -82,7 +74,7 @@ namespace AssetBundles
                     continue;
                 }
 
-                string[] splitArr = map.Split(new[] { PATTREN }, System.StringSplitOptions.None);
+                string[] splitArr = map.Split(new[] {PATTREN}, System.StringSplitOptions.None);
                 if (splitArr.Length < 2)
                 {
                     Logger.LogError("splitArr length < 2 : " + map);
@@ -91,10 +83,24 @@ namespace AssetBundles
 
                 ResourcesMapItem item = new ResourcesMapItem();
                 // 如：ui/prefab/assetbundleupdaterpanel_prefab.assetbundle
-                item.assetbundleName = splitArr[0];
+                // item.assetbundleName = splitArr[0];
+                if (splitArr.Length > 2
+                    &&
+                    splitArr[2] != null
+                    &&
+                    splitArr[2].Equals(AssetBundleConfig.VariantMapParttren))
+                {
+                    item.assetbundleName = splitArr[0] + "." + AssetBundleManager.Instance.nowVariantName;
+                }
+                else
+                {
+                    item.assetbundleName = splitArr[0];
+                }
+
                 // 如：UI/Prefab/AssetbundleUpdaterPanel.prefab
                 item.assetName = splitArr[1];
-                
+
+
                 var assetPath = item.assetName;
                 pathLookup.Add(assetPath, item);
                 List<string> assetsList = null;
@@ -103,15 +109,17 @@ namespace AssetBundles
                 {
                     assetsList = new List<string>();
                 }
+
                 if (!assetsList.Contains(item.assetName))
                 {
                     assetsList.Add(item.assetName);
                 }
+
                 assetsLookup[item.assetbundleName] = assetsList;
                 assetbundleLookup.Add(item.assetName, item.assetbundleName);
             }
         }
-        
+
         public bool MapAssetPath(string assetPath, out string assetbundleName, out string assetName)
         {
             assetbundleName = null;
@@ -123,9 +131,10 @@ namespace AssetBundles
                 assetName = item.assetName;
                 return true;
             }
+
             return false;
         }
-        
+
         public List<string> GetAllAssetNames(string assetbundleName)
         {
             List<string> allAssets = null;

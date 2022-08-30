@@ -37,27 +37,36 @@ namespace AssetBundles
                     UnityEngine.Debug.LogError("Empty assetbundle with variant : " + assetbundle);
                     continue;
                 }
-                // 自本节点向上找到Assetbundle所在
-                AssetBundleImporter assetbundleImporter = AssetBundleImporter.GetAtPath(assetPaths[0]);
-                while (assetbundleImporter != null && string.IsNullOrEmpty(assetbundleImporter.assetBundleVariant))
+
+                foreach (var assetPath in assetPaths)
                 {
-                    assetbundleImporter = assetbundleImporter.GetParent();
+                    // 自本节点向上找到Assetbundle所在
+                    AssetBundleImporter assetbundleImporter = AssetBundleImporter.GetAtPath(assetPath);
+
+                    while (assetbundleImporter != null && string.IsNullOrEmpty(assetbundleImporter.assetBundleVariant))
+                    {
+                        assetbundleImporter = assetbundleImporter.GetParent();
+                    }
+
+                    if (assetbundleImporter == null || string.IsNullOrEmpty(assetbundleImporter.assetBundleVariant))
+                    {
+                        UnityEngine.Debug.LogError("Can not find assetbundle with variant : " + assetbundle);
+                        continue;
+                    }
+
+                    string assetbundlePath = assetbundleImporter.assetPath;
+                    if (assetbundlePath.EndsWith("/"))
+                    {
+                        assetbundlePath = assetbundlePath.Substring(0, assetbundlePath.Length - 1);
+                    }
+
+                    // 由于各个Variant的内部结构必须完全一致，而Load时也必须完全填写，所以这里不需要关注到assetbundle具体的每个资源
+                    string nowNode = System.IO.Path.GetFileName(assetbundlePath);
+                    string mappingItem = string.Format("{0}{1}{2}", assetbundle, PATTREN, nowNode);
+                    mappingList.Add(mappingItem);
                 }
-                if (assetbundleImporter == null || string.IsNullOrEmpty(assetbundleImporter.assetBundleVariant))
-                {
-                    UnityEngine.Debug.LogError("Can not find assetbundle with variant : " + assetbundle);
-                    continue;
-                }
-                string assetbundlePath = assetbundleImporter.assetPath;
-                if (assetbundlePath.EndsWith("/"))
-                {
-                    assetbundlePath = assetbundlePath.Substring(0, assetbundlePath.Length - 1);
-                }
-                // 由于各个Variant的内部结构必须完全一致，而Load时也必须完全填写，所以这里不需要关注到assetbundle具体的每个资源
-                string nowNode = System.IO.Path.GetFileName(assetbundlePath);
-                string mappingItem = string.Format("{0}{1}{2}", assetbundle, PATTREN, nowNode);
-                mappingList.Add(mappingItem);
             }
+
             mappingList.Sort();
             if (!GameUtility.SafeWriteAllLines(outputFilePath, mappingList.ToArray()))
             {
@@ -69,6 +78,7 @@ namespace AssetBundles
                 AssetBundleEditorHelper.CreateAssetbundleForCurrent(outputFilePath);
                 Debug.Log("BuildVariantMapping success...");
             }
+
             AssetDatabase.Refresh();
         }
     }

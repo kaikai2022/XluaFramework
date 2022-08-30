@@ -64,7 +64,7 @@ namespace AESEncrypt
     }
 
 
-    public partial class FileGet1
+    public partial class FileGet
     {
         /// <summary>
         /// 获得目录下所有文件或指定文件类型文件(包含所有子文件夹)
@@ -99,6 +99,56 @@ namespace AESEncrypt
                     foreach (string d in dir)
                     {
                         getFile(d, extName, lst); //递归
+                    }
+                }
+
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+                throw ex;
+            }
+        }
+    }
+
+    public partial class FileGet
+    {
+        /// <summary>
+        /// 获取路径下所有文件 名字包含name的文件
+        /// </summary>
+        /// <param name="path">查找的路径</param>
+        /// <param name="name">包含的名字</param>
+        /// <param name="lst"> 路径下的文件</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static List<FileInfo> getFileAllName(string path, string name, List<FileInfo> lst = null)
+        {
+            try
+            {
+                // List<FileInfo> lst = new List<FileInfo>();
+                if (lst == null)
+                {
+                    lst = new List<FileInfo>();
+                }
+
+                string[] dir = Directory.GetDirectories(path); //文件夹列表
+                DirectoryInfo fdir = new DirectoryInfo(path);
+                FileInfo[] file = fdir.GetFiles();
+                //FileInfo[] file = Directory.GetFiles(path); //文件列表
+                if (file.Length != 0 || dir.Length != 0) //当前目录文件或文件夹不为空
+                {
+                    foreach (FileInfo f in file) //显示当前目录所有文件
+                    {
+                        if (f.FullName.ToLower().IndexOf(name.ToLower()) > 0)
+                        {
+                            lst.Add(f);
+                        }
+                    }
+
+                    foreach (string d in dir)
+                    {
+                        getFile(d, name, lst); //递归
                     }
                 }
 

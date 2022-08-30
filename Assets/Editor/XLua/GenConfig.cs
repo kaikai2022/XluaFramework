@@ -218,6 +218,11 @@
             new System.Collections.Generic.List<string>() {"System.Xml.XmlNodeList", "ItemOf"},
             new System.Collections.Generic.List<string>() {"UnityEngine.WWW", "movie"},
             new System.Collections.Generic.List<string>() {"UnityEngine.UI.Text", "OnRebuildRequested"},
+#if UNITY_IOS || PLATFORM_IOS
+            new System.Collections.Generic.List<string>() {"UnityEngine.Light", "SetLightDirty"},
+            new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowRadius"},
+            new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowAngle"},
+#endif
 #if UNITY_WEBGL
             new System.Collections.Generic.List<string>() {"UnityEngine.WWW", "threadPriority"},
             new System.Collections.Generic.List<string>() {"UnityEngine.Light", "SetLightDirty"},
@@ -276,8 +281,6 @@
                 {"System.Activator", "GetObject", "System.Type", "System.String"},
             new System.Collections.Generic.List<string>()
                 {"System.Activator", "GetObject", "System.Type", "System.String", "System.Object"},
-
-
 #endif
             new System.Collections.Generic.List<string>() {"UnityEngine.Texture2D", "alphaIsTransparency"},
             new System.Collections.Generic.List<string>() {"UnityEngine.Security", "GetChainOfTrustValue"},

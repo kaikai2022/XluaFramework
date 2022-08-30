@@ -63,6 +63,34 @@ namespace AssetBundles
         // asset缓存：给非公共ab包的asset提供逻辑层的复用
         Dictionary<string, object> assetsCaching = new Dictionary<string, object>();
 
+        private const string variantPrefabKey = "variantPrefabKey";
+
+        public string m_nowVariantName;
+
+        /// <summary>
+        /// 当前使用的Variant名字
+        /// </summary>
+        public string nowVariantName
+        {
+            get
+            {
+                //存在直接返回
+                if (!string.IsNullOrEmpty(m_nowVariantName))
+                    return m_nowVariantName;
+                //获取配置 如果存在 直接保存返回
+                m_nowVariantName = PlayerPrefs.GetString(variantPrefabKey);
+                if (!string.IsNullOrEmpty(m_nowVariantName))
+                    return m_nowVariantName;
+                return "cn";
+            }
+            set
+            {
+                m_nowVariantName = value;
+                if (!string.Equals(PlayerPrefs.GetString(variantPrefabKey), m_nowVariantName))
+                    PlayerPrefs.SetString(variantPrefabKey, m_nowVariantName);
+            }
+        }
+
         #region Attribute
 
         public static string ManifestBundleName
@@ -102,6 +130,7 @@ namespace AssetBundles
             }
 #endif
 
+
             manifest = new Manifest();
             assetsPathMapping = new AssetsPathMapping();
             // 说明：同时请求资源可以提高加载速度
@@ -126,9 +155,12 @@ namespace AssetBundles
             assetbundle.Unload(true);
             pathMapRequest.Dispose();
 
+            #region 设置所有公共包为常驻包
+
             // 设置所有公共包为常驻包
             var start = DateTime.Now;
             var allAssetbundleNames = manifest.GetAllAssetBundleNames();
+            var allAssetbundleNamesVariants = manifest.GetAllAssetBundlesWithVariant();
             foreach (var curAssetbundleName in allAssetbundleNames)
             {
                 if (string.IsNullOrEmpty(curAssetbundleName))
@@ -166,6 +198,49 @@ namespace AssetBundles
                     SetAssetBundleResident(curAssetbundleName, true);
                 }
             }
+
+            //设置所有的Variant
+            foreach (var curAssetbundleName in allAssetbundleNamesVariants)
+            {
+                if (string.IsNullOrEmpty(curAssetbundleName)
+                    ||
+                    !curAssetbundleName.EndsWith(nowVariantName))
+                {
+                    continue;
+                }
+
+                int count = 0;
+                foreach (var checkAssetbundle in allAssetbundleNames)
+                {
+                    if (checkAssetbundle == curAssetbundleName || string.IsNullOrEmpty(checkAssetbundle))
+                    {
+                        continue;
+                    }
+
+                    var allDependencies = manifest.GetAllDependencies(checkAssetbundle);
+                    if (Array.IndexOf(allDependencies, curAssetbundleName) >= 0)
+                    {
+                        count++;
+                        if (count >= 2)
+                        {
+                            break;
+                        }
+                    }
+                }
+                // 说明：设置被依赖数量为1的AB包为常驻包的理由详细情况见AssetBundleAsyncLoader.cs那一大堆注释
+                // TODO：1）目前已知Unity5.3版本和Unity5.5版本没问题，其它试过的几个版本都有问题，如果你使用的版本也有问题，需要修改这里的宏
+                //       2）整套AB包括压缩格式可能都要重新设计，这个以后有时间再去尝试
+#if !UNITY_5_3 && !UNITY_5_5
+                if (count >= 1)
+#else
+                if (count >= 2)
+#endif
+                {
+                    SetAssetBundleResident(curAssetbundleName, true);
+                }
+            }
+
+            #endregion
 
             Logger.Log(string.Format("AssetBundleResident Initialize use {0}ms", (DateTime.Now - start).Milliseconds));
             yield break;
@@ -246,6 +321,22 @@ namespace AssetBundles
                     {
                         var assetPath = AssetBundleUtility.PackagePathToAssetsPath(assetName);
                         var asset = curAssetbundle == null ? null : curAssetbundle.LoadAsset(assetPath, assetType);
+                        //原名字没找到 找Variant中的资源
+                        if (asset == null && curAssetbundle != null)
+                        {
+                            var assetPath_totower = assetPath.ToLower();
+                            var assetNames = curAssetbundle.GetAllAssetNames();
+                            foreach (var name in assetNames)
+                            {
+                                var _name = name.Replace(string.Format("/[{0}]", nowVariantName), "");
+                                if (_name.Equals(assetPath_totower))
+                                {
+                                    asset = curAssetbundle.LoadAsset(name, assetType);
+                                    break;
+                                }
+                            }
+                        }
+
                         AddAssetCache(assetName, asset);
 
 #if UNITY_EDITOR

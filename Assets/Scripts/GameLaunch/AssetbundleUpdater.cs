@@ -366,7 +366,7 @@ public class AssetbundleUpdater : MonoBehaviour
 
         DownloadGameForAndroid();
 #elif UNITY_IPHONE
-        ChannelManager.instance.StartDownloadGame(URLSetting.APP_DOWNLOAD_URL);
+        ChannelManager.Instance.StartDownloadGame(URLSetting.APP_DOWNLOAD_URL);
 #endif
         yield break;
     }

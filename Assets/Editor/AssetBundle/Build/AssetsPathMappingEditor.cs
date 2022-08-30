@@ -17,15 +17,15 @@ namespace AssetBundles
     {
         const string PATTREN = AssetBundleConfig.CommonMapPattren;
         public static List<string> mappingList = new List<string>();
-        
+
         public static void BuildPathMapping(AssetBundleManifest manifest)
         {
             mappingList.Clear();
             string outputFilePath = AssetBundleUtility.PackagePathToAssetsPath(AssetBundleConfig.AssetsPathMapFileName);
-            
+
             string[] allAssetbundles = manifest.GetAllAssetBundles();
             string[] allVariants = manifest.GetAllAssetBundlesWithVariant();
-            
+
             List<string> assetbundlesWithoutVariant = null;
             List<string> variantWithoutDeplicate = null;
             ProsessVariant(allAssetbundles, allVariants, out assetbundlesWithoutVariant, out variantWithoutDeplicate);
@@ -43,6 +43,7 @@ namespace AssetBundles
                     mappingList.Add(mappingItem);
                 }
             }
+
             // 处理带variants的assetbundle（已经去重）
             // string variant = "[" + AssetBundleConfig.VariantMapParttren + "]";
             foreach (string assetbundle in variantWithoutDeplicate)
@@ -57,35 +58,42 @@ namespace AssetBundles
                     UnityEngine.Debug.LogError("Empty assetbundle with variant : " + assetbundle);
                     continue;
                 }
+
                 // 自本节点向上找到Assetbundle所在
                 AssetBundleImporter assetbundleImporter = AssetBundleImporter.GetAtPath(assetPaths[0]);
                 while (assetbundleImporter != null && string.IsNullOrEmpty(assetbundleImporter.assetBundleVariant))
                 {
                     assetbundleImporter = assetbundleImporter.GetParent();
                 }
+
                 if (assetbundleImporter == null || string.IsNullOrEmpty(assetbundleImporter.assetBundleVariant))
                 {
                     UnityEngine.Debug.LogError("Can not find assetbundle with variant : " + assetbundle);
                     continue;
                 }
+
                 string assetbundlePath = assetbundleImporter.assetPath;
                 if (assetbundlePath.EndsWith("/"))
                 {
                     assetbundlePath = assetbundlePath.Substring(0, assetbundlePath.Length - 1);
                 }
+
                 // 将拿掉[Variant]目录名如：
                 // Assets/AssetsPackage/UI/Prefabs/Language/TestVariant.prefab
                 // 用此种方式可以统一路径，使加载Assetbundle时的路径与具体激活的variant无关
                 string nowRoot = GameUtility.FormatToUnityPath(System.IO.Path.GetDirectoryName(assetbundlePath));
                 foreach (string assetPath in assetPaths)
                 {
-                    string nowAsset = assetPath.Replace(assetbundlePath, "");
-                    string nowAssetPath = nowRoot + nowAsset;
-                    string packagePath = AssetBundleUtility.AssetsPathToPackagePath(nowAssetPath);
-                    string mappingItem = string.Format("{0}{1}{2}", RemoveVariantSuffix(assetbundle), PATTREN, packagePath);
+                    string nowAsset = assetPath.Replace(string.Format("/[{0}]", assetbundleImporter.assetBundleVariant),
+                        "");
+                    // string nowAssetPath = nowRoot + nowAsset;
+                    string packagePath = AssetBundleUtility.AssetsPathToPackagePath(nowAsset);
+                    string mappingItem = string.Format("{0}{1}{2}{3}{4}", RemoveVariantSuffix(assetbundle), PATTREN,
+                        packagePath, PATTREN, AssetBundleConfig.VariantMapParttren);
                     mappingList.Add(mappingItem);
                 }
             }
+
             mappingList.Sort();
 
             if (!GameUtility.SafeWriteAllLines(outputFilePath, mappingList.ToArray()))
@@ -98,11 +106,13 @@ namespace AssetBundles
                 AssetBundleEditorHelper.CreateAssetbundleForCurrent(outputFilePath);
                 Debug.Log("BuildPathMapping success...");
             }
+
             AssetDatabase.Refresh();
         }
-        
+
         // 处理所有的Variant：相同Assetbundle，不同Variant只需保留一份不带Variant的映射
-        public static void ProsessVariant(string[] allAssetbundle, string[] allVariants, out List<string> assetbundlesWithoutVariant, out List<string> variantWithoutDeplicate)
+        public static void ProsessVariant(string[] allAssetbundle, string[] allVariants,
+            out List<string> assetbundlesWithoutVariant, out List<string> variantWithoutDeplicate)
         {
             assetbundlesWithoutVariant = new List<string>();
             // 抽取出所有不带Variant的Assetbundle
@@ -113,12 +123,14 @@ namespace AssetBundles
                     assetbundlesWithoutVariant.Add(assetbundle);
                 }
             }
+
             // 过滤所有varians后缀
             List<string> variantsProsessed = new List<string>();
             for (int i = 0; i < allVariants.Length; i++)
             {
                 variantsProsessed.Add(RemoveVariantSuffix(allVariants[i]));
             }
+
             // 过滤所有重复的varians
             List<string> variantsNoDuplicate = new List<string>();
             foreach (string variant in variantsProsessed)
@@ -128,6 +140,7 @@ namespace AssetBundles
                     variantsNoDuplicate.Add(variant);
                 }
             }
+
             // 取出同Assetbundle名称，不同variant的唯一代表
             variantWithoutDeplicate = new List<string>();
             foreach (string variant in allVariants)
@@ -139,7 +152,7 @@ namespace AssetBundles
                 }
             }
         }
-        
+
         public static string RemoveVariantSuffix(string name)
         {
             int idx = name.LastIndexOf('.');

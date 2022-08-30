@@ -69,7 +69,7 @@ public class BuildPlayer : Editor
         if (PackageUtils.GetAssetbundleIsEncrptySetting())
         {
             Logger.Log("进行AB包加密");
-            var allAssetbundle = FileGet1.getFile(outputPath, ".assetbundle");
+            var allAssetbundle = FileGet.getFileAllName(outputPath, ".assetbundle");
             foreach (var file in allAssetbundle)
             {
                 AES.AESFileEncrypt(file.FullName, AssetBundleConfig.key);
