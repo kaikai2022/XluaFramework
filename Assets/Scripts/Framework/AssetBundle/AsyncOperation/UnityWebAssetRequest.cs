@@ -142,5 +142,22 @@ namespace AssetBundles
             }
             Recycle(this);
         }
+        
+        public override AssetBundle assetbundle
+        {
+            get
+            {
+                if (AESEncrypt.AES.BytesIsEncrypt(bytes))
+                {
+                    var assetBundle =
+                        AssetBundle.LoadFromMemoryAsync(AESEncrypt.AES.AESFileByteDecrypt(bytes, AssetBundleConfig.key));
+                    return assetBundle.assetBundle;
+                }
+                else
+                {
+                    return AssetBundle.LoadFromMemoryAsync(bytes).assetBundle;
+                }
+            }
+        }
     }
 }

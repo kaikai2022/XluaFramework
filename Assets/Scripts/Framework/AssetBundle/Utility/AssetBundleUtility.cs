@@ -163,6 +163,11 @@ namespace AssetBundles
             return null;
         }
 
+        /// <summary>
+        /// assetbundlePackage的路径转为unity Assets 下路径
+        /// </summary>
+        /// <param name="assetPath">assetbundlePackage 路径</param>
+        /// <returns></returns>
         public static string PackagePathToAssetsPath(string assetPath)
         {
             return "Assets/" + AssetBundleConfig.AssetsFolderName + "/" + assetPath;

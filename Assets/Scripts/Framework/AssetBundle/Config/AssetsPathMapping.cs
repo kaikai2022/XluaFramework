@@ -35,6 +35,7 @@ namespace AssetBundles
     {
         public string assetbundleName;
         public string assetName;
+        public string variantsAssetName;
     }
 
     [Hotfix]
@@ -87,10 +88,12 @@ namespace AssetBundles
                 if (splitArr.Length > 2
                     &&
                     splitArr[2] != null
-                    &&
-                    splitArr[2].Equals(AssetBundleConfig.VariantMapParttren))
+                )
                 {
                     item.assetbundleName = splitArr[0] + "." + AssetBundleManager.Instance.nowVariantName;
+                    item.variantsAssetName = splitArr[2].Replace(
+                        string.Format("/[{0}]", AssetBundleConfig.VariantMapParttren),
+                        string.Format("/[{0}]", AssetBundleManager.Instance.nowVariantName));
                 }
                 else
                 {
@@ -129,6 +132,24 @@ namespace AssetBundles
             {
                 assetbundleName = item.assetbundleName;
                 assetName = item.assetName;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool MapAssetPath(string assetPath, out string assetbundleName, out string assetName,
+            out string variantsAssetName)
+        {
+            assetbundleName = null;
+            assetName = null;
+            variantsAssetName = null;
+            ResourcesMapItem item = null;
+            if (pathLookup.TryGetValue(assetPath, out item))
+            {
+                assetbundleName = item.assetbundleName;
+                assetName = item.assetName;
+                variantsAssetName = item.variantsAssetName;
                 return true;
             }
 

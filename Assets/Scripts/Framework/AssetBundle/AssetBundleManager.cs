@@ -126,6 +126,9 @@ namespace AssetBundles
 #if UNITY_EDITOR
             if (AssetBundleConfig.IsEditorMode)
             {
+                assetsPathMapping = new AssetsPathMapping();
+                assetsPathMapping.Initialize(AssetDatabase.LoadAssetAtPath<TextAsset>(assetsPathMapping.AssetName)
+                    .text);
                 yield break;
             }
 #endif
@@ -623,7 +626,8 @@ namespace AssetBundles
             // var creater = AssetBundleRequester.Get();
             // var url = AssetBundleUtility.GetAssetBundleDataPath(assetbundleName);
 
-            var creater = WebAssetRequester.Get();
+            // var creater = WebAssetRequester.Get();
+            var creater = UnityWebAssetRequester.Get();
             var url = AssetBundleUtility.GetAssetBundleFileUrl(assetbundleName);
             creater.Init(assetbundleName, url);
             webRequesting.Add(assetbundleName, creater);
@@ -687,7 +691,7 @@ namespace AssetBundles
         {
             // var creater = AssetBundleRequester.Get();
             // var url = AssetBundleUtility.GetAssetBundleDataPath(assetbundleName);
-            var creater = WebAssetRequester.Get();
+            var creater = UnityWebAssetRequester.Get();
             var url = AssetBundleUtility.GetAssetBundleFileUrl(assetbundleName);
 #if UNITY_CLIENT
             Debug.Log("RequestAssetBundleAsync：" + url);
@@ -881,7 +885,11 @@ namespace AssetBundles
 #if UNITY_EDITOR
             if (AssetBundleConfig.IsEditorMode)
             {
-                string path = AssetBundleUtility.PackagePathToAssetsPath(assetPath);
+                string asset_Name;
+                string variantsName;
+                string path;
+                assetsPathMapping.MapAssetPath(assetPath, out path, out asset_Name, out variantsName);
+                path = AssetBundleUtility.PackagePathToAssetsPath(variantsName == null ? asset_Name : variantsName);
                 if (isAtlas)
                 {
                     UnityEngine.Object[] targets = AssetDatabase.LoadAllAssetsAtPath(path);

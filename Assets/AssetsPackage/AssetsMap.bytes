@@ -1,3 +1,4 @@
+assetsmap_bytes.assetbundle,AssetsMap.bytes
 commonscenes/loadingscene_unity.assetbundle,CommonScenes/LoadingScene.unity
 effect/common.assetbundle,Effect/Common/Materials/models_fx_R.mat
 effect/common.assetbundle,Effect/Common/Materials/models_fx_RGB.mat
@@ -332,8 +333,8 @@ minnigames/guesstheidiom/gamingimages.assetbundle,MinniGames/GuessTheIdiom/Gamin
 minnigames/guesstheidiom/gamingimages.assetbundle,MinniGames/GuessTheIdiom/GamingImages/wrong.png
 minnigames/guesstheidiom/gamingimages.assetbundle,MinniGames/GuessTheIdiom/GamingImages/wrong_bg.png
 minnigames/guesstheidiom/gamingimages.assetbundle,MinniGames/GuessTheIdiom/GamingImages/wrong_title.png
-minnigames/guesstheidiom/gamingprefab.assetbundle,MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab,Variant
-minnigames/guesstheidiom/gamingprefab.assetbundle,MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab,Variant
+minnigames/guesstheidiom/gamingprefab.assetbundle,MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab,MinniGames/GuessTheIdiom/GamingPrefab/[Variant]/btn_text.prefab
+minnigames/guesstheidiom/gamingprefab.assetbundle,MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab,MinniGames/GuessTheIdiom/GamingPrefab/[Variant]/wait_input_item_box.prefab
 minnigames/guesstheidiom/guesstheidiomstartscene_unity.assetbundle,MinniGames/GuessTheIdiom/GuessTheIdiomStartScene.unity
 minnigames/guesstheidiom/levelselectionimages.assetbundle,MinniGames/GuessTheIdiom/LevelSelectionImages/input.png
 minnigames/guesstheidiom/levelselectionimages.assetbundle,MinniGames/GuessTheIdiom/LevelSelectionImages/key.png
@@ -543,3 +544,4 @@ ui/prefabs/uiloading.assetbundle,UI/Prefabs/UILoading/UILoading.prefab
 ui/prefabs/uilogin.assetbundle,UI/Prefabs/UILogin/UILogin.prefab
 ui/prefabs/uilogin.assetbundle,UI/Prefabs/UILogin/UILoginServer.prefab
 ui/prefabs/uimain.assetbundle,UI/Prefabs/UIMain/UITestMain.prefab
+variantsmap_bytes.assetbundle,VariantsMap.bytes

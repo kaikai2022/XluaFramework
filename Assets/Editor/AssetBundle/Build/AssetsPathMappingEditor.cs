@@ -88,8 +88,18 @@ namespace AssetBundles
                         "");
                     // string nowAssetPath = nowRoot + nowAsset;
                     string packagePath = AssetBundleUtility.AssetsPathToPackagePath(nowAsset);
-                    string mappingItem = string.Format("{0}{1}{2}{3}{4}", RemoveVariantSuffix(assetbundle), PATTREN,
-                        packagePath, PATTREN, AssetBundleConfig.VariantMapParttren);
+                    string mappingItem = string.Format("{0}{1}{2}{3}{4}",
+                            RemoveVariantSuffix(assetbundle), PATTREN, packagePath,
+                            PATTREN,
+                            AssetBundleUtility.AssetsPathToPackagePath(
+                                assetPath.Replace(
+                                    string.Format("/[{0}]", assetbundleImporter.assetBundleVariant),
+                                    string.Format("/[{0}]", AssetBundleConfig.VariantMapParttren)
+                                )
+                            )
+                            // AssetBundleConfig.VariantMapParttren
+                        )
+                        ;
                     mappingList.Add(mappingItem);
                 }
             }
