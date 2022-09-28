@@ -17,7 +17,7 @@ local img_idiom_path = "IdiomBg/idiom"
 local function OnCreate(self)
     base.OnCreate(self)
     -- 窗口生命周期内保持的成员变量放这
-    self.img_idiom = self:AddComponent(UIImage_Atlas, img_idiom_path, 'MinniGames/GuessTheIdiom/AllIdionms/AllIdionms.spriteatlas', "1")
+    self.img_idiom = self:AddComponent(UIImage_Atlas, img_idiom_path, 'MiniGames/GuessTheIdiom/AllIdionms/AllIdionms.spriteatlas', "1")
     self:initGameOverPanel()
     self:initGameInputPanel()
     self:AddComponent(require("UI.UIGuessTheIdiom.Idiom_UI_SoundToggle"), "toggle_sound")
@@ -26,7 +26,7 @@ end
 local function OnEnable(self)
     base.OnEnable(self)
     -- 窗口关闭时可以清理的成员变量放这
-    --self.img_idiom.:SetSpriteName(string.format('MinniGames/GuessTheIdiom/AllIdionms/'))
+    --self.img_idiom.:SetSpriteName(string.format('MiniGames/GuessTheIdiom/AllIdionms/'))
     --self:StartGame()
     self.ctrl:GameStart()
 end

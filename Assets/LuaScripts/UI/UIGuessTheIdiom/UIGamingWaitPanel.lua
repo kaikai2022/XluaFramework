@@ -14,7 +14,7 @@ function UIGamingWaitPanel:OnCreate(model)
     self.texts = {}
 
     --local imageTs = self.transform:Find("Image")
-    --local wait_input_item_box_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(GameObject), nil)
+    --local wait_input_item_box_prefab = ResourcesManager:GetInstance():CoLoadAsync("MiniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(GameObject), nil)
     --self.texts = {}
     --for index = 1, 4 do
     --    local wait_input_item_box = GameObject.Instantiate(wait_input_item_box_prefab, imageTs)
@@ -29,7 +29,7 @@ function UIGamingWaitPanel:OnEnable()
     base.OnEnable(self)
     local imageTs = self.transform:Find("Image")
 
-    --GameObjectPool:GetInstance():GetGameObjectAsync("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", function(wait_input_item_box_prefab)
+    --GameObjectPool:GetInstance():GetGameObjectAsync("MiniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", function(wait_input_item_box_prefab)
     --    self.texts = {}
     --    for index = 1, 4 do
     --        local wait_input_item_box = GameObject.Instantiate(wait_input_item_box_prefab, imageTs)
@@ -40,7 +40,7 @@ function UIGamingWaitPanel:OnEnable()
     --    wait_input_item_box_prefab:SetActive(false)
     --end)
 
-    local wait_input_item_box_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(GameObject), nil)
+    local wait_input_item_box_prefab = ResourcesManager:GetInstance():CoLoadAsync("MiniGames/GuessTheIdiom/GamingPrefab/wait_input_item_box.prefab", typeof(GameObject), nil)
     for index = 1, 4 do
         local wait_input_item_box = GameObject.Instantiate(wait_input_item_box_prefab, imageTs)
         local text = wait_input_item_box.transform:Find("Text"):GetComponent("Text")

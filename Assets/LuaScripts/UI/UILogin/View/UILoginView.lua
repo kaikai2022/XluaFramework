@@ -42,7 +42,7 @@ local function ClickOnLoginBtn(self)
     local password = self.password_input:GetText()
     --self.ctrl:LoginServer(name, password)
     print("点击测试")
-     ResourcesManager:GetInstance():LoadAsync("MinniGames/GuessTheIdiom/GuessTheIdiomImages.spriteatlas", typeof(CS.UnityEngine.U2D.SpriteAtlas),
+     ResourcesManager:GetInstance():LoadAsync("MiniGames/GuessTheIdiom/GuessTheIdiomImages.spriteatlas", typeof(CS.UnityEngine.U2D.SpriteAtlas),
             function(spriteAtlas, ...)
                 print(spriteAtlas)
                 local image = self.login_btn.transform:GetComponent(typeof(CS.UnityEngine.UI.Image))

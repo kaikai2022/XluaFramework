@@ -97,7 +97,7 @@ public class CSAndLuaPBTest : MonoBehaviour
         oneSlot.cmd_list.Add(cmdWithFrame);
         dataTmp.slot_list.Add(oneSlot);
         DeepCopyData(data, dataTmp);
-        ProtoBufSerializer.Serialize(msSend.memStream, dataTmp);
+        ProtoBufSerializer_Test.Serialize(msSend.memStream, dataTmp);
         ProtoFactory.Recycle(dataTmp);//*************回收，很重要
 
         byte[] sendBytes = StreamBufferPool.GetBuffer(msSend, 0, (int)msSend.Position());
@@ -136,7 +136,7 @@ public class CSAndLuaPBTest : MonoBehaviour
         // 解析协议
         msRecive.ResetStream();
         msRecive.CopyFrom(luaEncodeBytes, 0, 0, luaEncodeBytes.Length);
-        ntf_battle_frame_data dataTmp = ProtoBufSerializer.Deserialize(msRecive.memStream, typeof(ntf_battle_frame_data), (int)luaEncodeBytes.Length) as ntf_battle_frame_data;
+        ntf_battle_frame_data dataTmp = ProtoBufSerializer_Test.Deserialize(msRecive.memStream, typeof(ntf_battle_frame_data), (int)luaEncodeBytes.Length) as ntf_battle_frame_data;
 #if !FOR_GC_TEST
         PrintData(dataTmp);
 #endif

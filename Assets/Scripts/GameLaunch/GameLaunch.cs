@@ -239,11 +239,7 @@ public class GameLaunch : MonoBehaviour
         XLuaManager.Instance.StartHotfix();
         XLuaManager.Instance.StartToLuaSprite();
         CustomDataStruct.Helper.Startup();
-        
         // DarkTonic.MasterAudio.MasterAudio.MuteEverything();
         // transform.GetComponent<Toggle>().OnPointerClick();
     }
-    
-    void test(bool ison){}
-    
 }

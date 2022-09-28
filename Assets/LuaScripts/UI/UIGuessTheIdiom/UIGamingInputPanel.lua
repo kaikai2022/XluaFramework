@@ -33,8 +33,8 @@ end
 
 function UIGamingInputPanel:OnEnable()
     base.OnEnable(self)
-    --local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
-    local btn_text_prefab = GameObjectPool:GetInstance():CoGetGameObjectAsync("MinniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject))
+    --local btn_text_prefab = ResourcesManager:GetInstance():CoLoadAsync("MiniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject), nil)
+    local btn_text_prefab = GameObjectPool:GetInstance():CoGetGameObjectAsync("MiniGames/GuessTheIdiom/GamingPrefab/btn_text.prefab", typeof(GameObject))
     --self.textBtnList = {}
     for index = 1, buttonCount do
         local btn_text = GameObject.Instantiate(btn_text_prefab, self.content)

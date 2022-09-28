@@ -4,12 +4,12 @@ require "Global.Global"
 -- 定义为全局模块，整个lua程序的入口类
 GameMain = {};
 
-local LuachGameObject
+--local LuachGameObject
 
 local AssetBundleManager = CS.AssetBundles.AssetBundleManager.Instance
 -- 进入游戏
 local function EnterGame()
-    GameObject.Destroy(LuachGameObject.gameObject);
+    --GameObject.Destroy(LuachGameObject.gameObject);
     -- luaide 调试
     -- local breakInfoFun,xpcallFun = require("LuaDebug")("localhost", 7003)
     -- luaide 调试
@@ -32,7 +32,14 @@ local function EnterGame()
     --dbg.tcpConnect('localhost', 9966)
     coroutine.start(function()
         SceneManager:GetInstance():Startup()
-        SceneManager:GetInstance():SwitchScene(SceneConfig.GuessTheIdiomStartScene)
+        --SceneManager:GetInstance():SwitchScene(SceneConfig.GuessTheIdiomStartScene)
+        KingKongWarGlobal = require("MiniGames.KingKongWar.KingKongWarGlobal")
+        KingKongWarGlobal:GetInstance():Enter()
+        Logger.Log(SceneConfig.KingKongWarStartScene)
+        Logger.Log(table.dump(SceneConfig.KingKongWarStartScene))
+        SceneManager:GetInstance():SwitchScene(SceneConfig.KingKongWarStartScene)
+
+        --KingKongWarGlobal:GetInstance():Leave()
     end)
 end
 
@@ -42,8 +49,8 @@ local function Start()
     Logger.Log("GameMain start...")
 
     GameMain.gameLaunch = CS.UnityEngine.GameObject.Find("GameLuach"):GetComponent(typeof(CS.GameLaunch))
-    LuachGameObject = GameMain.gameLaunch.transform:Find("UIRoot/TopLayer/Luach")
-    LuachGameObject.gameObject:SetActive(true);
+    --LuachGameObject = GameMain.gameLaunch.transform:Find("UIRoot/TopLayer/Luach")
+    --LuachGameObject.gameObject:SetActive(true);
     --if gameLaunch:IsUpdateFinal() then
     --    -- 模块启动
     UpdateManager:GetInstance():Startup()
@@ -108,7 +115,7 @@ function GameMain.InitLaunchPrefab()
         return loadingWin.IsLoading
     end)
     GameMain.update = loadingWin.View.gameObject:AddComponent(typeof(CS.AssetbundleUpdater))
-    LuachGameObject.gameObject:SetActive(false)
+    --LuachGameObject.gameObject:SetActive(false)
 end
 
 ---private GameMain.InitAppVersion 初始化App版本
@@ -269,7 +276,23 @@ function GameMain.UpdateRes()
     GameMain.InitChannel()
     GameMain.InitSDK()
     GameMain.InitNoticeTipPrefab()
+    GameMain.WaitVideoPlayerEnd()
     GameMain.StartUpdateAssetRes()
+end
+
+function GameMain.WaitVideoPlayerEnd()
+    local videoPlayer = GameObject.Find("LaunchVideo"):GetComponent("VideoPlayer")
+    coroutine.waitwhile(function()
+        if
+        CS.UnityEngine.Application.platform == CS.UnityEngine.RuntimePlatform.LinuxEditor
+                or CS.UnityEngine.Application.platform == CS.UnityEngine.RuntimePlatform.WindowsEditor
+                or CS.UnityEngine.Application.platform == CS.UnityEngine.RuntimePlatform.OSXEditor
+        then
+            return false
+        end
+        return videoPlayer.isPlaying
+    end)
+    GameObject.Destroy(videoPlayer.gameObject);
 end
 
 -- GameMain公共接口，其它的一律为私有接口，只能在本模块访问

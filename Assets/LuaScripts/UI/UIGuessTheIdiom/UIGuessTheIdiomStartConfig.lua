@@ -9,7 +9,7 @@ local UIGuessTheIdiomStart = {
     Model = require "UI.UIGuessTheIdiom.Model.UIGuessTheIdiomStartModel",
     Ctrl = require "UI.UIGuessTheIdiom.Controller.UIGuessTheIdiomStartCtrl",
     View = require "UI.UIGuessTheIdiom.View.UIGuessTheIdiomStartView",
-    PrefabPath = "MinniGames/GuessTheIdiom/UIStartPanel.prefab",
+    PrefabPath = "MiniGames/GuessTheIdiom/UIStartPanel.prefab",
 }
 
 -- 等级界面
@@ -19,7 +19,7 @@ local UIGuessTheIdiomLevel = {
     Model = require "UI.UIGuessTheIdiom.Model.UIGuessTheIdiomLevelModel",
     Ctrl = require "UI.UIGuessTheIdiom.Controller.UIGuessTheIdiomLevelCtrl",
     View = require "UI.UIGuessTheIdiom.View.UIGuessTheIdiomLevelView",
-    PrefabPath = "MinniGames/GuessTheIdiom/UILevelSelection2.prefab",
+    PrefabPath = "MiniGames/GuessTheIdiom/UILevelSelection2.prefab",
 }
 
 -- 游戏界面
@@ -29,7 +29,7 @@ local UIGuessTheIdiomGaming = {
     Model = require "UI.UIGuessTheIdiom.Model.UIGuessTheIdiomGamingModel",
     Ctrl = require "UI.UIGuessTheIdiom.Controller.UIGuessTheIdiomGamingCtrl",
     View = require "UI.UIGuessTheIdiom.View.UIGuessTheIdiomGamingView",
-    PrefabPath = "MinniGames/GuessTheIdiom/UIGuessTheIdiomGaming.prefab",
+    PrefabPath = "MiniGames/GuessTheIdiom/UIGuessTheIdiomGaming.prefab",
 }
 
 return {
