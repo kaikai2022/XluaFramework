@@ -7,6 +7,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
+using DG.DemiEditor;
 
 namespace AssetBundles
 {
@@ -72,7 +73,7 @@ namespace AssetBundles
 
         static void Run()
         {
-            return;
+            // return;
             string args = string.Format("\"{0}\" {1}", AssetBundleConfig.LocalSvrAppWorkPath,
                 Process.GetCurrentProcess().Id);
             ProcessStartInfo startInfo = ExecuteInternalMono.GetProfileStartInfoForMono(
@@ -84,6 +85,7 @@ namespace AssetBundles
             if (launchProcess == null || launchProcess.HasExited == true || launchProcess.Id == 0)
             {
                 UnityEngine.Debug.LogError("Unable Start AssetBundleServer process!");
+                UnityEngine.Debug.LogError(launchProcess.StandardError.ReadToEnd());
             }
             else
             {
@@ -91,11 +93,28 @@ namespace AssetBundles
                 UnityEngine.Debug.Log("Local assetbundle server run!");
             }
 
-            var launchProcessThread = new Thread(() =>
+            var launchProcessDebugThread = new Thread(async () =>
             {
-                UnityEngine.Debug.Log(launchProcess.StandardOutput.ReadToEnd());
+                while (true)
+                {
+                    string str = await launchProcess.StandardOutput.ReadLineAsync();
+                    if (!str.IsNullOrEmpty())
+                        UnityEngine.Debug.Log(str);
+                }
             });
-            launchProcessThread.Start();
+            var launchProcessErrorThread = new Thread(async () =>
+            {
+                while (true)
+                {
+                    string errStr = await launchProcess.StandardError.ReadLineAsync();
+                    if (!errStr.IsNullOrEmpty())
+                    {
+                        UnityEngine.Debug.LogError(errStr);
+                    }
+                }
+            });
+            launchProcessDebugThread.Start();
+            launchProcessErrorThread.Start();
 
             // var thread = new Thread(() =>
             // {
@@ -130,7 +149,7 @@ namespace AssetBundles
                 }
             }
 
-            return profileVersion;
+            return profileVersion + "-api";
             // return "4.5";
         }
 

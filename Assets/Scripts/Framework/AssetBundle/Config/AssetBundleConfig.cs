@@ -2,6 +2,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using System.IO;
+
 #endif
 
 /// <summary>
@@ -16,7 +17,12 @@ namespace AssetBundles
     {
         // public const string localSvrAppPath = "Editor/AssetBundle/LocalServer/AssetBundleServer.dll";
         // public const string localSvrAppPath = "Editor/AssetBundle/LocalServer/XluaAssetBundleServer.exe";
-        public const string localSvrAppPath = "../AssetBundleServer/XluaAssetBundleServer.exe";
+#if UNITY_EDITOR_WIN
+        public const string localSvrAppPath = "../AssetBundleServer/AssetBundleServer/obj/Release/AssetBundleServer.exe ";
+#elif UNITY_EDITOR_OSX
+        public const string localSvrAppPath = "../AssetBundleServer/AssetBundleServer/AssetBundleServer.exe"; //mono 编译文件使用 csc AssetBundleServer.cs
+#endif
+
 
         public const string AssetBundlesFolderName = "AssetBundles";
         public const string TempFolderName = "Temp";
