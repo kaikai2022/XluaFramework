@@ -230,18 +230,34 @@ public class BuildPlayer : Editor
         SetPlayerSetting(channel);
 
         string savePath = PackageUtils.GetChannelOutputPath(buildTarget, channelName);
-        string appName = channel.GetProductName() + ".apk";
+        string appName = channel.GetProductName() +
+                         (EditorUserBuildSettings.exportAsGoogleAndroidProject ? "" : ".apk");
         if (channel.IsGooglePlay())
         {
             savePath = Path.Combine(savePath, "GooglePlay");
             GameUtility.SafeDeleteDir(savePath);
-            BuildPipeline.BuildPlayer(GetBuildScenes(), savePath, buildTarget,
-                BuildOptions.AcceptExternalModificationsToPlayer);
+            var buildPlayerOptions = new BuildPlayerOptions()
+            {
+                scenes = GetBuildScenes(), locationPathName = savePath,
+                targetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget), target = buildTarget,
+                options = BuildOptions.AcceptExternalModificationsToPlayer
+            };
+            BuildPipeline.BuildPlayer(buildPlayerOptions);
+
+            // BuildPipeline.BuildPlayer(GetBuildScenes(), savePath, buildTarget,
+            //     BuildOptions.AcceptExternalModificationsToPlayer);
         }
         else
         {
             savePath = Path.Combine(savePath, appName);
-            BuildPipeline.BuildPlayer(GetBuildScenes(), savePath, buildTarget, BuildOptions.None);
+            var buildPlayerOptions = new BuildPlayerOptions()
+            {
+                scenes = GetBuildScenes(), locationPathName = savePath,
+                targetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget), target = buildTarget
+            };
+            BuildPipeline.BuildPlayer(buildPlayerOptions);
+
+            // BuildPipeline.BuildPlayer(GetBuildScenes(), savePath, buildTarget, BuildOptions.None);
         }
 
         string outputPath = Path.Combine(Application.persistentDataPath, AssetBundleConfig.AssetBundlesFolderName);

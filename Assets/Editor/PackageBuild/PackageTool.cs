@@ -25,6 +25,8 @@ public class PackageTool : EditorWindow
     static private bool iosBuildABForPerChannel;
     static private bool buildABSForPerChannel;
 
+    static private bool IsExportProject = false;
+
     // static private bool isABOffsetEncryption = false;
     /// <summary>
     /// AB包是否加密
@@ -62,6 +64,7 @@ public class PackageTool : EditorWindow
         androidBuildABForPerChannel = PackageUtils.GetAndroidBuildABForPerChannelSetting();
         iosBuildABForPerChannel = PackageUtils.GetIOSBuildABForPerChannelSetting();
         isABEncrpty = PackageUtils.GetAssetbundleIsEncrptySetting();
+        IsExportProject = EditorUserBuildSettings.exportAsGoogleAndroidProject;
     }
 
     void OnGUI()
@@ -346,6 +349,16 @@ public class PackageTool : EditorWindow
         GUILayout.Space(3);
         GUILayout.Label("-------------[Build Android Player]-------------");
         GUILayout.Space(3);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Build Android IsExportProject", GUILayout.Width(200));
+        bool isExportProject = EditorGUILayout.Toggle(IsExportProject, GUILayout.Width(50));
+        if (isExportProject != IsExportProject)
+        {
+            IsExportProject = isExportProject;
+            EditorUserBuildSettings.exportAsGoogleAndroidProject = IsExportProject;
+        }
+
+        GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
         if (PackageUtils.BuildAssetBundlesForPerChannel(buildTarget))
