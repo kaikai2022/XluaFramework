@@ -17,7 +17,7 @@ public class AssetbundleUpdater : MonoBehaviour
 {
     static int MAX_DOWNLOAD_NUM = 5;
     static int UPDATE_SIZE_LIMIT = 5 * 1024 * 1024;
-    static string APK_FILE_PATH = "/xluaframework_{0}_{1}.apk";
+    static string APK_FILE_PATH = "/LuaFrameworkClient_{0}_{1}.apk";
 
     string resVersionPath = null;
     string noticeVersionPath = null;

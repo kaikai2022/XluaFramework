@@ -30,7 +30,7 @@
             typeof(System.Collections.Generic.Dictionary<string, UnityEngine.GameObject>),
             typeof(UnityEngine.Events.UnityEvent),
 
-#if PLATFORM_ANDROID || UNITY_ANDROID
+#if UNITY_ANDROID
             typeof(UnityEngine.Android.Permission),
 #endif
 
@@ -212,8 +212,7 @@
         };
 
     //黑名单
-    [XLua.BlackList] 
-    public static System.Collections.Generic.List<System.Collections.Generic.List<string>> BlackList =
+    [XLua.BlackList] public static System.Collections.Generic.List<System.Collections.Generic.List<string>> BlackList =
         new System.Collections.Generic.List<System.Collections.Generic.List<string>>()
         {
             new System.Collections.Generic.List<string>() {"System.Xml.XmlNodeList", "ItemOf"},
@@ -229,6 +228,8 @@
             new System.Collections.Generic.List<string>() {"UnityEngine.Light", "SetLightDirty"},
             new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowRadius"},
             new System.Collections.Generic.List<string>() {"UnityEngine.Light", "shadowAngle"},
+#endif
+#if UNITY_ANDROID || UNITY_WEBGL
             new System.Collections.Generic.List<string>()
                 {"System.Activator", "CreateInstance", "System.String", "System.String"},
             new System.Collections.Generic.List<string>()

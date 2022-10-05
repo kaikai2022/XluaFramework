@@ -1,4 +1,12 @@
-﻿
+﻿using UnityEngine;
+
+public class URLConfig : ScriptableObject
+{
+    
+    public string StartUpUrl = "";
+}
+
+
 public class URLSetting
 {
     public static string START_UP_URL

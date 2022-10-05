@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using System.Diagnostics;
 using System.IO;
@@ -66,22 +67,36 @@ namespace AssetBundles
                 instance.mServerPID = 0;
                 UnityEngine.Debug.Log("Local assetbundle server stop!");
             }
-            catch
+            catch (Exception exception)
             {
+                UnityEngine.Debug.LogError(string.Format(
+                    "Local assetbundle server stop! \n error:{0} \n instance.mServerPID:{1}", exception,
+                    instance.mServerPID));
             }
         }
 
+
         static void Run()
         {
-            // return;
+#if UNITY_EDITOR_OSX
+//             Process.Start("/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", "mono " + AssetBundleConfig.LocalSvrAppPath +
+//                                                                          " " +
+//                                                                          AssetBundleConfig.LocalSvrAppWorkPath);
+             return;
+#endif
             string args = string.Format("\"{0}\" {1}", AssetBundleConfig.LocalSvrAppWorkPath,
                 Process.GetCurrentProcess().Id);
-            ProcessStartInfo startInfo = ExecuteInternalMono.GetProfileStartInfoForMono(
-                MonoInstallationFinder.GetMonoInstallation("MonoBleedingEdge"), GetMonoProfileVersion(),
-                AssetBundleConfig.LocalSvrAppPath, args, true);
+            ProcessStartInfo startInfo =
+                ExecuteInternalMono.GetProfileStartInfoForMono(
+                    MonoInstallationFinder.GetMonoInstallation("MonoBleedingEdge"), GetMonoProfileVersion(),
+                    AssetBundleConfig.LocalSvrAppPath, args, true);
             startInfo.WorkingDirectory = AssetBundleConfig.LocalSvrAppWorkPath;
-            startInfo.UseShellExecute = false;
+
             Process launchProcess = Process.Start(startInfo);
+            launchProcess.Exited += (sender, eventArgs) =>
+            {
+                UnityEngine.Debug.LogError(string.Format("AssetBundleServer over {0}", eventArgs.ToString()));
+            };
             if (launchProcess == null || launchProcess.HasExited == true || launchProcess.Id == 0)
             {
                 UnityEngine.Debug.LogError("Unable Start AssetBundleServer process!");
@@ -90,7 +105,7 @@ namespace AssetBundles
             else
             {
                 instance.mServerPID = launchProcess.Id;
-                UnityEngine.Debug.Log("Local assetbundle server run!");
+                UnityEngine.Debug.Log(string.Format("Local assetbundle server run! pid:{0}", launchProcess.Id));
             }
 
             var launchProcessDebugThread = new Thread(async () =>
@@ -149,7 +164,7 @@ namespace AssetBundles
                 }
             }
 
-            return profileVersion + "-api";
+            return profileVersion; // + "-api";
             // return "4.5";
         }
 

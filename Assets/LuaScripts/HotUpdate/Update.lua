@@ -89,7 +89,7 @@ function Update:_InitAppVersion()
         end
     end
 
-    local loader = AssetBundleManager:RequestAssetFileAsync(CS.BuildUtils.AppVersionFileName)
+    local loader = CS.AssetBundles.AssetBundleManager.Instance:RequestAssetFileAsync(CS.BuildUtils.AppVersionFileName)
     coroutine.waitforasyncop(loader)
     local streamingTxt = loader.text
     loader:Dispose()
